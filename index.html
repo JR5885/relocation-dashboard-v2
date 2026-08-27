@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tech-PMO Command Center | Relocation Blitz</title>
+<title>Tech-PMO Governance Command Center | Relocation Blitz</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com/">
@@ -33,7 +33,7 @@
   .masthead{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:22px;}
   .brand-eyebrow{font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);font-weight:600;margin:0 0 6px;}
   .brand-title{font-size:clamp(28px,4vw,40px);font-weight:800;color:var(--text);}
-  .brand-sub{color:var(--text-muted);font-size:14.5px;margin-top:6px;max-width:60ch;}
+  .brand-sub{color:var(--text-muted);font-size:14.5px;margin-top:6px;max-width:65ch;line-height:1.5;}
 
   .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;}
   @media (max-width:820px){.kpi-row{grid-template-columns:repeat(2,1fr);}}
@@ -61,9 +61,9 @@
   .region-filter button.active{background:var(--accent);color:var(--accent-text-on);}
 
   .board{display:flex;gap:14px;overflow-x:auto;padding-bottom:10px;align-items:flex-start;}
-  .column{background:var(--surface);border:1px solid var(--border);border-radius:12px;min-width:300px;max-width:300px;flex:0 0 auto;}
+  .column{background:var(--surface);border:1px solid var(--border);border-radius:12px;min-width:310px;max-width:310px;flex:0 0 auto;}
   .column-head{padding:12px 14px;border-bottom:1px solid var(--border-soft);display:flex;justify-content:space-between;align-items:center;}
-  .column-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--accent-strong);}
+  .column-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.03em;color:var(--accent-strong);}
   .column-count{font-size:11px;color:var(--text-faint);margin-top:2px;}
   .column-body{padding:10px;display:flex;flex-direction:column;gap:10px;min-height:60px;}
   .column-empty{font-size:12px;color:var(--text-faint);text-align:center;padding:18px 6px;border:1px dashed var(--border);border-radius:8px;}
@@ -75,7 +75,6 @@
   .region-pill.ML{background:var(--amber-soft);color:var(--amber);}
   .region-pill.UAE{background:var(--accent-soft);color:var(--accent-strong);}
   .card-title{font-size:14px;font-weight:700;margin-bottom:2px;}
-  .card-vendor{font-size:12px;color:var(--text-muted);margin-bottom:8px;}
   .card-budget-row{display:flex;justify-content:space-between;font-size:11.5px;color:var(--text-muted);margin-bottom:4px;}
   .mini-bar-track{height:6px;background:var(--border-soft);border-radius:999px;overflow:hidden;margin-bottom:8px;}
   .mini-bar-fill{height:100%;border-radius:999px;background:var(--green);}
@@ -112,23 +111,23 @@
 <div class="wrap">
   <div class="masthead">
     <div>
-      <p class="brand-eyebrow">Tech-PMO Governance · SDLC Execution Engine</p>
+      <p class="brand-eyebrow">Tech-PMO Governance & SDLC Execution Engine</p>
       <h1 class="brand-title">Relocation Blitz — SG · ML · UAE</h1>
-      <p class="brand-sub">End-to-end multi-region delivery lifecycle aligned with <b>BACKLOG ➔ DEVELOPMENT ➔ TEST ➔ PUBLISH</b> framework. Interactive telemetry & live Google Sheets synchronization.</p>
+      <p class="brand-sub">Multi-jurisdictional resource governance engine enforcing rigorous Stage-Gate control across <b>BACKLOG（待辦/初始清單） ➔ DEVELOPMENT（開發/審批中） ➔ TEST（測試/背景審查中） ➔ PUBLISH（已發布/成功入境）</b> lifecycle. Integrated with real-time Google Spreadsheet telemetry & financial variance tracking.</p>
     </div>
   </div>
 
   <div class="kpi-row">
-    <div class="kpi-tile"><div class="kpi-label">Total Scope (Headcount)</div><div class="kpi-value" id="kpiCount">0<small>pax</small></div><div class="kpi-foot">Google Sheets Live Data</div></div>
+    <div class="kpi-tile"><div class="kpi-label">Total Scope (Headcount)</div><div class="kpi-value" id="kpiCount">0<small>pax</small></div><div class="kpi-foot">Live Google Sheets Sync</div></div>
     <div class="kpi-tile"><div class="kpi-label">Lifecycle Velocity</div><div class="kpi-value">75<small>%</small></div><div class="kpi-foot">Weighted SDLC completion</div></div>
-    <div class="kpi-tile"><div class="kpi-label">Total Budget Burn</div><div class="kpi-value" id="kpiSpent" style="font-size:24px;">Loading...</div><div class="kpi-foot">Variance controlled</div></div>
-    <div class="kpi-tile" style="border-color:var(--green);"><div class="kpi-label">PMO Governance</div><div class="kpi-value" style="font-size:24px;color:var(--green);">Active</div><div class="kpi-foot">Pipeline synchronized</div></div>
+    <div class="kpi-tile"><div class="kpi-label">Budget Burn & Variance</div><div class="kpi-value" id="kpiSpent" style="font-size:24px;">Loading...</div><div class="kpi-foot">Cost control active</div></div>
+    <div class="kpi-tile" style="border-color:var(--green);"><div class="kpi-label">Governance Status</div><div class="kpi-value" style="font-size:24px;color:var(--green);">Compliant</div><div class="kpi-foot">State machine online</div></div>
   </div>
 
   <div class="progress-shell">
     <div class="progress-top">
-      <strong>SDLC Lifecycle Progress (Backlog to Publish)</strong>
-      <span>Live Sync & State Machine Active</span>
+      <strong>SDLC Stage-Gate Pipeline Progress</strong>
+      <span>Data-driven Telemetry & State Control</span>
     </div>
     <div class="bar-track"><div class="bar-fill"></div></div>
   </div>
@@ -137,10 +136,10 @@
     <button class="tabbtn active" data-tab="board">🗂️ SDLC Kanban Board</button>
     <button class="tabbtn" data-tab="matrix">🏗️ PMO Competency Matrix</button>
     <button class="tabbtn" data-tab="analytics">📊 Live Analytics</button>
-    <button class="tabbtn" data-tab="roster">👥 Stakeholder Roster</button>
+    <button class="tabbtn" data-tab="roster">👥 Stakeholder Audit Roster</button>
   </div>
 
-  <!-- TAB 1: KANBAN (BACKLOG -> DEVELOPMENT -> TEST -> PUBLISH) -->
+  <!-- TAB 1: KANBAN -->
   <section class="tabpanel active" id="panel-board">
     <div class="board-controls">
       <div class="region-filter" id="regionFilter">
@@ -161,19 +160,19 @@
   <!-- TAB 2: MATRIX -->
   <section class="tabpanel" id="panel-matrix">
     <div class="section-heading" style="margin-bottom:14px;">
-      <h2>PMO Core Competency Matrix</h2>
-      <p style="color:var(--text-muted);font-size:13.5px;">Structured delivery framework mapping to SDLC governance standards.</p>
+      <h2>PMO Core Governance Framework</h2>
+      <p style="color:var(--text-muted);font-size:13.5px;">Structured multi-jurisdictional delivery model aligned with enterprise PMO standards.</p>
     </div>
     <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px;">
       <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;">
-        <h3>Sprint Velocity & Execution</h3>
-        <div class="comp-metric">122 Resources · 4 Stages</div>
-        <p style="font-size:13px;color:var(--text-muted);">Strict tracking from Backlog intake to Production Publish across 3 jurisdictions.</p>
+        <h3>Cross-Region Resource Orchestration</h3>
+        <div class="comp-metric">122 Resources · 3 Jurisdictions</div>
+        <p style="font-size:13px;color:var(--text-muted);">Managing complex dependencies across Singapore, Malaysia, and UAE with zero-defect execution.</p>
       </div>
       <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;">
-        <h3>Risk & Compliance Assurance</h3>
-        <div class="comp-metric">100% Audit Readiness</div>
-        <p style="font-size:13px;color:var(--text-muted);">Automated gate checks between Development and Test phases to mitigate statutory breaches.</p>
+        <h3>Financial Governance & Cost Control</h3>
+        <div class="comp-metric">Variance Analysis Enabled</div>
+        <p style="font-size:13px;color:var(--text-muted);">Real-time tracking of budget burn against baseline allocations to prevent cost overruns.</p>
       </div>
     </div>
   </section>
@@ -181,8 +180,8 @@
   <!-- TAB 3: LIVE ANALYTICS -->
   <section class="tabpanel" id="panel-analytics">
     <div class="section-heading" style="margin-bottom:14px;">
-      <h2>Live Analytics</h2>
-      <p style="color:var(--text-muted);font-size:13.5px;">Dynamic metrics calculated directly from SDLC pipeline.</p>
+      <h2>Executive Telemetry & Live Analytics</h2>
+      <p style="color:var(--text-muted);font-size:13.5px;"></p>
     </div>
     <div class="analytics-grid">
       <div class="analytics-card">
@@ -190,7 +189,7 @@
         <div class="chart-container"><canvas id="headcountPieChart"></canvas></div>
       </div>
       <div class="analytics-card">
-        <h3>Budget Burn vs Allocation</h3>
+        <h3>Financial Allocation vs Actual Spend</h3>
         <div class="chart-container"><canvas id="budgetBarChart"></canvas></div>
       </div>
     </div>
@@ -199,8 +198,8 @@
   <!-- TAB 4: ROSTER -->
   <section class="tabpanel" id="panel-roster">
     <div class="section-heading" style="margin-bottom:14px;">
-      <h2>Stakeholder & Resource Roster</h2>
-      <p style="color:var(--text-muted);font-size:13.5px;">Full audit log of all resources mapped across SDLC stages.</p>
+      <h2>Stakeholder & Resource Audit Roster</h2>
+      <p style="color:var(--text-muted);font-size:13.5px;">Comprehensive audit trail mapping all resources across SDLC lifecycle phases.</p>
     </div>
     <div class="board-controls" style="margin-top:12px;">
       <div class="region-filter" id="rosterRegionFilter">
@@ -210,11 +209,11 @@
         <button data-reg="UAE">UAE</button>
       </div>
       <div class="region-filter" id="rosterStatusFilter">
-        <button data-stat="All" class="active">All SDLC Stages</button>
-        <button data-stat="BACKLOG">BACKLOG</button>
-        <button data-stat="DEVELOPMENT">DEVELOPMENT</button>
-        <button data-stat="TEST">TEST</button>
-        <button data-stat="PUBLISH">PUBLISH</button>
+        <button data-stat="All" class="active">All SDLC Phases</button>
+        <button data-stat="BACKLOG（待辦/初始清單）">BACKLOG（待辦/初始清單）</button>
+        <button data-stat="DEVELOPMENT（開發/審批中）">DEVELOPMENT（開發/審批中）</button>
+        <button data-stat="TEST（測試/背景審查中）">TEST（測試/背景審查中）</button>
+        <button data-stat="PUBLISH（已發布/成功入境）">PUBLISH（已發布/成功入境）</button>
       </div>
     </div>
     <input type="text" class="search-box" id="rosterSearch" placeholder="Search name or ID...">
@@ -222,7 +221,7 @@
   </section>
 
   <div class="foot-note">
-    <span>Tech-PMO Governance 2.0 · SDLC Execution Engine</span>
+    <span>Tech-PMO Governance 2.0 · Data-Driven Execution Engine</span>
     <span id="syncTime">Google Sheets Auto-Synced</span>
   </div>
 </div>
@@ -230,14 +229,14 @@
 <!-- EDIT MODAL -->
 <div class="modal-overlay" id="editModal">
   <div class="modal-card">
-    <h3>編輯資源與專案狀態</h3>
+    <h3>PMO Change Control: Edit Resource State</h3>
     <input type="hidden" id="editId">
     <div class="form-group">
-      <label>資源姓名 (Name)</label>
+      <label>資源姓名 (Resource Name)</label>
       <input type="text" id="editName">
     </div>
     <div class="form-group">
-      <label>區域 (Region)</label>
+      <label>區域 (Jurisdiction / Region)</label>
       <select id="editRegion">
         <option value="SG">SG</option>
         <option value="ML">ML</option>
@@ -245,29 +244,29 @@
       </select>
     </div>
     <div class="form-group">
-      <label>SDLC 階段 (Stage)</label>
+      <label>SDLC 治理階段 (Stage Gate)</label>
       <select id="editStatus">
-        <option value="BACKLOG">BACKLOG</option>
-        <option value="DEVELOPMENT">DEVELOPMENT</option>
-        <option value="TEST">TEST</option>
-        <option value="PUBLISH">PUBLISH</option>
+        <option value="BACKLOG（待辦/初始清單）">BACKLOG（待辦/初始清單）</option>
+        <option value="DEVELOPMENT（開發/審批中）">DEVELOPMENT（開發/審批中）</option>
+        <option value="TEST（測試/背景審查中）">TEST（測試/背景審查中）</option>
+        <option value="PUBLISH（已發布/成功入境）">PUBLISH（已發布/成功入境）</option>
       </select>
     </div>
     <div class="form-group">
-      <label>已花費金額 ($)</label>
+      <label>已花費金額 ($ Actual Spend)</label>
       <input type="number" id="editSpent">
     </div>
     <div class="form-group">
-      <label>預算配置 ($)</label>
+      <label>預算配置 ($ Budget Allocation)</label>
       <input type="number" id="editAlloc">
     </div>
     <div class="form-group">
-      <label>目標交付日 (Target Date)</label>
+      <label>目標交付日 (Target Delivery Date)</label>
       <input type="text" id="editArrival">
     </div>
     <div class="modal-btns">
       <button onclick="closeModal()">取消</button>
-      <button class="btn-save" onclick="saveModal()">儲存變更</button>
+      <button class="btn-save" onclick="saveModal()">確認更新 (Commit)</button>
     </div>
   </div>
 </div>
@@ -276,8 +275,13 @@
 (function(){
   const gsheetCsvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQUem3z16ko71Gyz_80gTFiw7C_O9UkoBcJP8nAWabx1ikg23ujAUlEwyVTr4s-rguZ1DKbuDVkZB8c/pub?output=csv";
   
-  // 標準 PMO SDLC 階段 Wording 對齊
-  const STAGE_ORDER = ["BACKLOG", "DEVELOPMENT", "TEST", "PUBLISH"];
+  // 標準 PMO SDLC 階段 Wording 精確對齊
+  const STAGE_ORDER = [
+    "BACKLOG（待辦/初始清單）",
+    "DEVELOPMENT（開發/審批中）",
+    "TEST（測試/背景審查中）",
+    "PUBLISH（已發布/成功入境）"
+  ];
 
   let rawSheetRows = [];
   let currentRegionFilter = "All";
@@ -287,7 +291,7 @@
   let barChartInstance = null;
 
   function loadData(){
-    let saved = localStorage.getItem("pmo_sdlc_rows");
+    let saved = localStorage.getItem("pmo_sdlc_governance_rows");
     if(saved){
       rawSheetRows = JSON.parse(saved);
       initApp();
@@ -311,22 +315,20 @@
               if(cleanKey.includes("name")) cleanObj.EmployeeName = r[key];
               if(cleanKey.includes("region")) cleanObj.Region = r[key].trim();
               
-              // 將舊狀態自動對應或預設為 BACKLOG
               if(cleanKey.includes("status")){
                 let val = r[key].trim().toUpperCase();
-                if(STAGE_ORDER.includes(val)) cleanObj.Status = val;
-                else if(val.includes("SETUP") || val.includes("PENDING")) cleanObj.Status = "BACKLOG";
-                else if(val.includes("SUBMISSION") || val.includes("COMPLETED")) cleanObj.Status = "DEVELOPMENT";
-                else if(val.includes("APPROVAL")) cleanObj.Status = "TEST";
-                else if(val.includes("ENTRY") || val.includes("PUBLISH")) cleanObj.Status = "PUBLISH";
-                else cleanObj.Status = "BACKLOG";
+                if(val.includes("BACKLOG") || val.includes("SETUP") || val.includes("PENDING")) cleanObj.Status = STAGE_ORDER[0];
+                else if(val.includes("DEV") || val.includes("SUBMISSION") || val.includes("COMPLETED")) cleanObj.Status = STAGE_ORDER[1];
+                else if(val.includes("TEST") || val.includes("APPROVAL")) cleanObj.Status = STAGE_ORDER[2];
+                else if(val.includes("PUB") || val.includes("ENTRY")) cleanObj.Status = STAGE_ORDER[3];
+                else cleanObj.Status = STAGE_ORDER[0];
               }
 
               if(cleanKey.includes("alloc")) cleanObj.BudgetAllocated = parseFloat(r[key]) || 0;
               if(cleanKey.includes("spen")) cleanObj.BudgetSpent = parseFloat(r[key]) || 0;
               if(cleanKey.includes("arriv")) cleanObj.TargetArrivalDate = r[key];
             });
-            if(!cleanObj.Status) cleanObj.Status = "BACKLOG";
+            if(!cleanObj.Status) cleanObj.Status = STAGE_ORDER[0];
             return cleanObj;
           }).filter(r => r.EmployeeID);
           
@@ -338,28 +340,28 @@
   }
 
   function saveLocal(){
-    localStorage.setItem("pmo_sdlc_rows", JSON.stringify(rawSheetRows));
+    localStorage.setItem("pmo_sdlc_governance_rows", JSON.stringify(rawSheetRows));
   }
 
   window.resetToSheet = function(){
-    localStorage.removeItem("pmo_sdlc_rows");
+    localStorage.removeItem("pmo_sdlc_governance_rows");
     fetchSheetData();
   }
 
   function initApp(){
     let totalSpent = rawSheetRows.reduce((acc, r) => acc + (r.BudgetSpent || 0), 0);
     let totalAlloc = rawSheetRows.reduce((acc, r) => acc + (r.BudgetAllocated || 0), 0);
+    let variance = totalAlloc ? Math.round(((totalSpent - totalAlloc) / totalAlloc) * 100) : 0;
 
     document.getElementById("kpiCount").innerHTML = rawSheetRows.length + "<small>pax</small>";
-    document.getElementById("kpiSpent").innerText = "$" + Math.round(totalSpent).toLocaleString() + " / $" + Math.round(totalAlloc).toLocaleString();
-    document.getElementById("syncTime").innerText = "SDLC Synced: " + new Date().toLocaleTimeString();
+    document.getElementById("kpiSpent").innerText = "$" + Math.round(totalSpent).toLocaleString() + " (" + (variance > 0 ? "+" + variance : variance) + "%)";
+    document.getElementById("syncTime").innerText = "Governance Synced: " + new Date().toLocaleTimeString();
 
     renderBoard();
     renderRoster();
     renderCharts();
   }
 
-  // 支援手動移動階段 (Backlog -> Development -> Test -> Publish)
   window.moveStage = function(employeeId, direction){
     let idx = rawSheetRows.findIndex(r => r.EmployeeID === employeeId);
     if(idx === -1) return;
@@ -381,7 +383,7 @@
     document.getElementById("editId").value = r.EmployeeID;
     document.getElementById("editName").value = r.EmployeeName || "";
     document.getElementById("editRegion").value = r.Region || "SG";
-    document.getElementById("editStatus").value = r.Status || "BACKLOG";
+    document.getElementById("editStatus").value = r.Status || STAGE_ORDER[0];
     document.getElementById("editSpent").value = r.BudgetSpent || 0;
     document.getElementById("editAlloc").value = r.BudgetAllocated || 0;
     document.getElementById("editArrival").value = r.TargetArrivalDate || "";
@@ -453,12 +455,11 @@
               <span style="font-weight:700;font-size:12px;color:var(--text-muted);">${r.EmployeeID}</span>
             </div>
             <div class="card-title">${r.EmployeeName}</div>
-            <div class="card-vendor">Phase: ${r.Status}</div>
             <div class="card-budget-row"><span>$${r.BudgetSpent?.toLocaleString()} / $${r.BudgetAllocated?.toLocaleString()}</span><span>${pct}%</span></div>
             <div class="mini-bar-track"><div class="mini-bar-fill" style="width:${Math.min(pct, 100)}%;"></div></div>
             <div class="card-deadline">
               <span>Target: ${r.TargetArrivalDate || 'N/A'}</span>
-              <span class="status-chip">Active</span>
+              <span class="status-chip">Gated</span>
             </div>
             <div class="card-actions">
               <button onclick="moveStage('${r.EmployeeID}', -1)">◀ Prev</button>
@@ -467,7 +468,7 @@
             </div>
           </div>
         `;
-      }).join('') : '<div class="column-empty">No active backlog items</div>';
+      }).join('') : '<div class="column-empty">No active items</div>';
 
       return `
         <div class="column">
@@ -516,7 +517,7 @@
           </div>
           <table class="roster-table">
             <thead>
-              <tr><th>ID</th><th>Name</th><th>Region</th><th>SDLC Progress</th><th>Budget</th><th>Target Date</th></tr>
+              <tr><th>ID</th><th>Name</th><th>Region</th><th>SDLC Governance</th><th>Budget</th><th>Target Date</th></tr>
             </thead>
             <tbody>${rows}</tbody>
           </table>
