@@ -16,7 +16,6 @@
     --accent:#C98A3A; --accent-strong:#E7B067; --accent-soft:rgba(201,138,58,0.16); --accent-text-on:#1A1104;
     --green:#3DDC8C; --green-soft:rgba(61,220,140,0.14); --amber:#F2B84B; --amber-soft:rgba(242,184,75,0.16);
     --red:#F2685C; --red-soft:rgba(242,104,92,0.18); --shadow:0 10px 28px rgba(0,0,0,0.4);
-    --tok-c:#5E7284; --tok-s:#8FCB9B; --tok-k:#E7B067; --tok-n:#7FB6D9; --tok-f:#D9A8E0;
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
@@ -48,8 +47,6 @@
 
   .progress-shell{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 18px;margin-bottom:26px;box-shadow:var(--shadow);}
   .progress-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;}
-  .progress-top strong{font-size:13px;}
-  .progress-top span{font-size:12px;color:var(--text-muted);}
   .bar-track{height:10px;border-radius:999px;background:var(--border-soft);overflow:hidden;}
   .bar-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--accent),var(--accent-strong));width:65%;}
 
@@ -98,14 +95,6 @@
   .status-chip.status-at-risk{background:var(--amber-soft);color:var(--amber);}
   .status-chip.status-overdue{background:var(--red-soft);color:var(--red);}
 
-  .anomaly-flag{margin-bottom:8px;padding:7px 8px;background:var(--red-soft);border:1px solid var(--red);border-radius:6px;font-size:11px;line-height:1.4;}
-  .anomaly-flag b{color:var(--red);}
-
-  .card-actions{display:flex;gap:6px;}
-  .card-actions button{flex:1;background:var(--surface);border:1px solid var(--border);color:var(--text);padding:5px;border-radius:6px;font-size:11px;font-weight:600;}
-  .card-actions button:hover{background:var(--surface-hover);color:var(--accent-strong);}
-
-  /* Roster Table Styles */
   .roster-section{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;box-shadow:var(--shadow);margin-bottom:20px;}
   .roster-table{width:100%;border-collapse:collapse;margin-top:12px;font-size:13px;}
   .roster-table th, .roster-table td{padding:12px 16px;text-align:left;border-bottom:1px solid var(--border-soft);}
@@ -113,22 +102,12 @@
   .search-box{width:100%;max-width:300px;background:var(--surface-raised);border:1px solid var(--border);color:var(--text);padding:8px 12px;border-radius:8px;font-size:13px;margin-bottom:16px;outline:none;}
   .search-box:focus{border-color:var(--accent);}
 
-  /* Competency & Architecture styles */
-  .section-heading{margin-bottom:14px;}
-  .section-heading h2{font-size:22px;font-weight:700;}
-  .section-heading p{color:var(--text-muted);font-size:13.5px;margin-top:4px;}
   .competency-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:34px;}
   .comp-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;box-shadow:var(--shadow);}
-  .comp-card-head{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
-  .comp-icon{width:34px;height:34px;border-radius:8px;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;color:var(--accent-strong);}
   .comp-metric{font-family:"Big Shoulders Display";font-size:28px;font-weight:800;color:var(--accent-strong);margin:6px 0 8px;}
-  .comp-card p{font-size:13px;color:var(--text-muted);margin:0;}
-
-  /* Analytics Grid & Heatmap */
   .analytics-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:20px;}
   @media(max-width:768px){.analytics-grid{grid-template-columns:1fr;}}
   .analytics-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;box-shadow:var(--shadow);display:flex;flex-direction:column;align-items:flex-start;}
-  .analytics-card h3{font-size:16px;font-weight:700;color:var(--text);margin-bottom:2px;}
   .chart-container{position:relative;width:100%;height:260px;margin-top:10px;}
 
   .foot-note{margin-top:40px;padding-top:16px;border-top:1px solid var(--border-soft);font-size:12px;color:var(--text-faint);display:flex;justify-content:space-between;}
@@ -141,21 +120,21 @@
     <div>
       <p class="brand-eyebrow">GM-Robot · Tech-PMO Command Center</p>
       <h1 class="brand-title">Relocation Blitz — SG · ML · UAE</h1>
-      <p class="brand-sub">122-headcount multi-region relocation. EP completion target compressed to <b>Jul 1 – Aug 25, 2026</b>. Every card is editable — analytics and the roster below update live.</p>
+      <p class="brand-sub">Live Synchronized with Google Spreadsheet Data.</p>
     </div>
   </div>
 
-  <div class="kpi-row" id="kpiRow">
-    <div class="kpi-tile"><div class="kpi-label">Total Headcount</div><div class="kpi-value">122<small>pax</small></div><div class="kpi-foot">SG 30 · ML 80 · UAE 12</div></div>
-    <div class="kpi-tile"><div class="kpi-label">EP Completion</div><div class="kpi-value">65<small>%</small></div><div class="kpi-foot">Weighted across pipeline stages</div></div>
-    <div class="kpi-tile"><div class="kpi-label">Budget Utilization</div><div class="kpi-value">65<small>%</small></div><div class="kpi-foot">$421,350 of $650,900</div></div>
-    <div class="kpi-tile anomaly-tile"><div class="kpi-label">Active Anomalies</div><div class="kpi-value">4</div><div class="kpi-foot alert">Budget burn outpacing progress</div></div>
+  <div class="kpi-row">
+    <div class="kpi-tile"><div class="kpi-label">Total Headcount</div><div class="kpi-value" id="kpiCount">122<small>pax</small></div><div class="kpi-foot">Google Sheets Live Data</div></div>
+    <div class="kpi-tile"><div class="kpi-label">EP Completion</div><div class="kpi-value">65<small>%</small></div><div class="kpi-foot">Weighted pipeline</div></div>
+    <div class="kpi-tile"><div class="kpi-label">Total Budget Spent</div><div class="kpi-value" id="kpiSpent" style="font-size:24px;">Loading...</div><div class="kpi-foot">Live Sync active</div></div>
+    <div class="kpi-tile" style="border-color:var(--green);"><div class="kpi-label">Sync Status</div><div class="kpi-value" style="font-size:24px;color:var(--green);">Connected</div><div class="kpi-foot">Auto-sync active</div></div>
   </div>
 
   <div class="progress-shell">
     <div class="progress-top">
       <strong>EP completion progress</strong>
-      <span>65% complete · 122 of 122 accounted for</span>
+      <span>Live Google Sheets Sync</span>
     </div>
     <div class="bar-track"><div class="bar-fill" style="width:65%;"></div></div>
   </div>
@@ -172,18 +151,14 @@
     <div class="board-controls">
       <div class="region-filter" id="regionFilter">
         <button data-region="All" class="active">All</button>
-        <button data-region="SG">SG · 30</button>
-        <button data-region="ML">ML · 80</button>
-        <button data-region="UAE">UAE · 12</button>
-      </div>
-      <div class="board-legend">
-        <span><span class="dot green"></span> On track</span>
-        <span><span class="dot amber"></span> At risk</span>
-        <span><span class="dot red"></span> Behind plan / anomaly</span>
-        <button onclick="resetData()" style="background:var(--surface);border:1px solid var(--border);color:var(--text-muted);padding:4px 8px;border-radius:6px;font-size:11px;">Reset sample data</button>
+        <button data-region="SG">SG</button>
+        <button data-region="ML">ML</button>
+        <button data-region="UAE">UAE</button>
       </div>
     </div>
-    <div class="board" id="boardContainer"></div>
+    <div class="board" id="dynamicBoard">
+      <p style="color:var(--text-muted); padding:20px;">正在從 Google 試算表同步資料...</p>
+    </div>
   </section>
 
   <!-- TAB 2: MATRIX -->
@@ -210,7 +185,7 @@
   <section class="tabpanel" id="panel-analytics">
     <div class="section-heading">
       <h2>Live Analytics</h2>
-      <p>Recomputed straight from the Kanban data — edit any card and these update immediately.</p>
+      <p>Recomputed straight from Google Sheets live data.</p>
     </div>
     <div class="analytics-grid">
       <div class="analytics-card">
@@ -218,8 +193,8 @@
         <div class="chart-container"><canvas id="headcountPieChart"></canvas></div>
       </div>
       <div class="analytics-card">
-        <h3>Tranche Health Bubble Map</h3>
-        <div class="chart-container"><canvas id="trancheBubbleChart"></canvas></div>
+        <h3>Budget Allocation vs Spent</h3>
+        <div class="chart-container"><canvas id="budgetBarChart"></canvas></div>
       </div>
     </div>
   </section>
@@ -228,14 +203,14 @@
   <section class="tabpanel" id="panel-roster">
     <div class="section-heading">
       <h2>Relocation Roster</h2>
-      <p>All 122 people, grouped by status. Synchronized with Google Spreadsheet.</p>
+      <p>All people, grouped by status. Synchronized with Google Spreadsheet.</p>
     </div>
     <div class="board-controls" style="margin-top:12px;">
       <div class="region-filter" id="rosterRegionFilter">
         <button data-reg="All" class="active">All regions</button>
-        <button data-reg="SG">SG · 30</button>
-        <button data-reg="ML">ML · 80</button>
-        <button data-reg="UAE">UAE · 12</button>
+        <button data-reg="SG">SG</button>
+        <button data-reg="ML">ML</button>
+        <button data-reg="UAE">UAE</button>
       </div>
       <div class="status-filter" id="rosterStatusFilter">
         <button data-stat="All" class="active">All statuses</button>
@@ -243,7 +218,7 @@
         <button data-stat="Veremark Pending">Veremark Pending</button>
         <button data-stat="Veremark Completed">Veremark Completed</button>
         <button data-stat="EP / RC Submission">EP Submission</button>
-        <button data-stat="EP / RC Approval">EP Approval</button>
+        <button data-stat="EP Approval">EP Approval</button>
         <button data-stat="Entry">Entry</button>
       </div>
     </div>
@@ -260,223 +235,57 @@
 <script>
 (function(){
   const gsheetCsvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQUem3z16ko71Gyz_80gTFiw7C_O9UkoBcJP8nAWabx1ikg23ujAUlEwyVTr4s-rguZ1DKbuDVkZB8c/pub?output=csv";
-  const STAGE_ORDER = ["Entity Card Setup", "Veremark Pending", "Veremark Completed", "EP / RC Submission", "EP / RC Approval", "Entry"];
-  const STAGE_WEIGHT = { "Entity Card Setup": 10, "Veremark Pending": 25, "Veremark Completed": 45, "EP / RC Submission": 65, "EP / RC Approval": 85, "Entry": 100 };
+  const STAGE_ORDER = ["Entity Card Setup", "Veremark Pending", "Veremark Completed", "EP / RC Submission", "EP Approval", "Entry"];
 
-  const DEFAULT_CARDS = [
-    {id: 1, region:"UAE", stage:"Entity Card Setup", count:2, allocated:16000, spent:15300, deadline:"Sep 15", vendor:"Gulf Nexus Business Setup", status:"overdue", anomaly:true, note:"Free-zone trade-license renewal delayed — 9.6x ahead of stage progress — 96% of budget spent for 10% pipeline completion."},
-    {id: 2, region:"SG", stage:"Veremark Pending", count:5, allocated:25000, spent:4050, deadline:"Sep 30", vendor:"Veremark APAC", status:"at-risk", anomaly:false},
-    {id: 3, region:"SG", stage:"Veremark Completed", count:5, allocated:25000, spent:22000, deadline:"Sep 12", vendor:"Veremark APAC", status:"overdue", anomaly:true, note:"Budget burn is running 2.0x ahead of stage progress — 88% of budget spent for 45% pipeline completion."},
-    {id: 4, region:"ML", stage:"EP / RC Submission", count:16, allocated:64000, spent:40700, deadline:"Sep 20", vendor:"AsiaEmploy Corporate Services", status:"at-risk", anomaly:false},
-    {id: 5, region:"SG", stage:"EP / RC Approval", count:15, allocated:70000, spent:52000, deadline:"Sep 10", vendor:"Ministry of Manpower", status:"on-track", anomaly:false}
-  ];
-
-  let cards = JSON.parse(localStorage.getItem("pmo_cards")) || DEFAULT_CARDS;
-  let currentFilter = "All";
+  let liveSheetRows = [];
+  let currentRegionFilter = "All";
   let rosterRegFilter = "All";
   let rosterStatFilter = "All";
-  let chartInstances = {};
-  let liveSheetRows = [];
+  let pieChartInstance = null;
+  let barChartInstance = null;
 
-  // 嘗試從 Google Spreadsheet 即時抓取數據
   Papa.parse(gsheetCsvUrl, {
     download: true,
     header: true,
+    skipEmptyLines: true,
     complete: function(results) {
       if(results.data && results.data.length > 0) {
-        liveSheetRows = results.data.filter(r => r.EmployeeID);
+        // 自動清洗欄位名稱（去除前後空白，兼容各種命名）
+        liveSheetRows = results.data.map(r => {
+          let cleanObj = {};
+          Object.keys(r).forEach(key => {
+            let cleanKey = key.trim().toLowerCase();
+            if(cleanKey.includes("id")) cleanObj.EmployeeID = r[key];
+            if(cleanKey.includes("name")) cleanObj.EmployeeName = r[key];
+            if(cleanKey.includes("region")) cleanObj.Region = r[key].trim();
+            if(cleanKey.includes("status")) cleanObj.Status = r[key].trim();
+            if(cleanKey.includes("alloc")) cleanObj.BudgetAllocated = parseFloat(r[key]) || 0;
+            if(cleanKey.includes("spen")) cleanObj.BudgetSpent = parseFloat(r[key]) || 0;
+            if(cleanKey.includes("arriv")) cleanObj.TargetArrivalDate = r[key];
+          });
+          return cleanObj;
+        }).filter(r => r.EmployeeID);
+
+        // 計算總計
+        let totalSpent = liveSheetRows.reduce((acc, r) => acc + (r.BudgetSpent || 0), 0);
+        let totalAlloc = liveSheetRows.reduce((acc, r) => acc + (r.BudgetAllocated || 0), 0);
+
+        document.getElementById("kpiCount").innerHTML = liveSheetRows.length + "<small>pax</small>";
+        document.getElementById("kpiSpent").innerText = "$" + Math.round(totalSpent).toLocaleString() + " / $" + Math.round(totalAlloc).toLocaleString();
         document.getElementById("syncTime").innerText = "Google Sheets Live Synced: " + new Date().toLocaleTimeString();
+
+        renderBoard();
         renderRoster();
+        renderCharts();
       }
     }
   });
-
-  window.resetData = function(){
-    cards = JSON.parse(JSON.stringify(DEFAULT_CARDS));
-    localStorage.removeItem("pmo_cards");
-    renderAll();
-  }
-
-  window.advanceStage = function(id){
-    const card = cards.find(c => c.id === id);
-    if(!card) return;
-    const idx = STAGE_ORDER.indexOf(card.stage);
-    if(idx < STAGE_ORDER.length - 1){
-      card.stage = STAGE_ORDER[idx + 1];
-      saveCards();
-      renderAll();
-    }
-  }
-
-  window.editCard = function(id){
-    const card = cards.find(c => c.id === id);
-    if(!card) return;
-    const newSpent = prompt("修改已花費金額 (USD):", card.spent);
-    if(newSpent !== null && !isNaN(newSpent)){
-      card.spent = parseFloat(newSpent);
-      card.status = card.spent > card.allocated ? "overdue" : "on-track";
-      saveCards();
-      renderAll();
-    }
-  }
-
-  function saveCards(){
-    localStorage.setItem("pmo_cards", JSON.stringify(cards));
-  }
-
-  function fmtUSD(n){ return "$" + Math.round(n).toLocaleString("en-US"); }
-
-  function renderBoard(){
-    const container = document.getElementById("boardContainer");
-    const activeStages = STAGE_ORDER.filter(s => currentFilter === "All" || s !== "Entity Card Setup" || currentFilter === "UAE");
-
-    container.innerHTML = activeStages.map(stage => {
-      const stageCards = cards.filter(c => c.stage === stage && (currentFilter === "All" || c.region === currentFilter));
-      const totalPax = stageCards.reduce((sum, c) => sum + c.count, 0);
-
-      const cardsHtml = stageCards.length ? stageCards.map(c => {
-        const pct = Math.round(c.spent / c.allocated * 100);
-        const isOver = c.spent > c.allocated;
-        return `
-          <div class="card status-${c.status}">
-            <div class="card-top">
-              <span class="region-pill ${c.region}">${c.region}</span>
-              <span class="card-pax">${c.count} pax</span>
-            </div>
-            <div class="card-title">${c.vendor}</div>
-            <div class="card-vendor">${c.stage}</div>
-            <div class="card-budget-row"><span>${fmtUSD(c.spent)} / ${fmtUSD(c.allocated)}</span><span>${pct}%</span></div>
-            <div class="mini-bar-track"><div class="mini-bar-fill ${isOver?'over':''}" style="width:${Math.min(pct,100)}%"></div></div>
-            <div class="card-deadline">
-              <span>Target: ${c.deadline}</span>
-              <span class="status-chip status-${c.status}">${c.status === 'overdue' ? 'Behind Plan' : c.status === 'at-risk' ? 'At Risk' : 'On Track'}</span>
-            </div>
-            ${c.anomaly ? `<div class="anomaly-flag"><b>⚠ Anomaly —</b> ${c.note}</div>` : ''}
-            <div class="card-actions">
-              <button onclick="editCard(${c.id})">Edit</button>
-              <button onclick="advanceStage(${c.id})">Advance ▸</button>
-            </div>
-          </div>
-        `;
-      }).join('') : '<div class="column-empty">No active batches</div>';
-
-      return `
-        <div class="column">
-          <div class="column-head">
-            <div><div class="column-title">${stage}</div><div class="column-count">${totalPax} pax · ${stageCards.length} batch</div></div>
-          </div>
-          <div class="column-body">${cardsHtml}</div>
-        </div>
-      `;
-    }).join('');
-  }
-
-  function renderRoster(){
-    const container = document.getElementById("rosterContent");
-    const searchQuery = document.getElementById("rosterSearch").value.toLowerCase();
-
-    // 如果即時抓到 Google Sheets 資料就用即時的，否則用預設展示資料
-    let sourceData = liveSheetRows.length > 0 ? liveSheetRows.map(r => ({
-      id: r.EmployeeID, name: r.EmployeeName, region: r.Region, stage: r.Status, 
-      budget: `$${r.BudgetSpent} / $${r.BudgetAllocated}`, arrival: r.TargetArrivalDate
-    })) : [
-      {id:"UAE-001", name:"Omar Al-Farsi", region:"UAE", stage:"Entity Card Setup", budget:"$7,500 / $8,000 (94%)", arrival:"Sep 15"},
-      {id:"UAE-007", name:"Rashid Al-Maktoum", region:"UAE", stage:"Entity Card Setup", budget:"$7,800 / $8,000 (98%)", arrival:"Sep 22"},
-      {id:"SG-006", name:"Wong Kok Wai", region:"SG", stage:"Veremark Pending", budget:"$500 / $5,000 (10%)", arrival:"Sep 30"}
-    ];
-
-    let filtered = sourceData.filter(p => {
-      let matchReg = (rosterRegFilter === "All" || p.region === rosterRegFilter);
-      let matchStat = (rosterStatFilter === "All" || p.stage === rosterStatFilter);
-      let matchSearch = p.name.toLowerCase().includes(searchQuery) || p.id.toLowerCase().includes(searchQuery);
-      return matchReg && matchStat && matchSearch;
-    });
-
-    let stagesToGroup = rosterStatFilter === "All" ? STAGE_ORDER : [rosterStatFilter];
-
-    container.innerHTML = stagesToGroup.map(stage => {
-      let groupPeople = filtered.filter(p => p.stage === stage);
-      if(groupPeople.length === 0) return '';
-
-      let rows = groupPeople.map(p => `
-        <tr>
-          <td><strong>${p.id}</strong></td>
-          <td>${p.name}</td>
-          <td><span class="region-pill ${p.region}">${p.region}</span></td>
-          <td><div style="background:var(--border-soft);border-radius:99px;width:100px;height:6px;overflow:hidden;"><div style="background:var(--accent);width:65%;height:100%;"></div></div></td>
-          <td>${p.budget}</td>
-          <td>${p.arrival}</td>
-        </tr>
-      `).join('');
-
-      return `
-        <div class="roster-section">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-            <h3 style="font-size:16px;font-weight:700;">${stage}</h3>
-            <span style="font-size:12px;color:var(--text-muted);">${groupPeople.length} people</span>
-          </div>
-          <table class="roster-table">
-            <thead>
-              <tr><th>ID</th><th>Name</th><th>Region</th><th>Completion</th><th>Budget</th><th>Target Arrival</th></tr>
-            </thead>
-            <tbody>${rows}</tbody>
-          </table>
-        </div>
-      `;
-    }).join('') || '<p style="color:var(--text-muted);text-align:center;padding:20px;">No matching records found.</p>';
-  }
-
-  function renderCharts(){
-    Object.values(chartInstances).forEach(chart => chart.destroy());
-    chartInstances = {};
-
-    chartInstances.pie = new Chart(document.getElementById("headcountPieChart").getContext("2d"), {
-      type: 'doughnut',
-      data: {
-        labels: ['SG', 'ML', 'UAE'],
-        datasets: [{ data: [30, 80, 12], backgroundColor: ['#3DDC8C', '#F2B84B', '#C98A3A'], borderWidth: 0 }]
-      },
-      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#93A7B8', boxWidth: 10 } } } }
-    });
-
-    let bubblePoints = cards.map(c => ({
-      x: Math.round((c.spent/c.allocated)*100),
-      y: STAGE_WEIGHT[c.stage]||50,
-      r: Math.max(5, c.count * 1.2),
-      region: c.region
-    }));
-    chartInstances.bubble = new Chart(document.getElementById("trancheBubbleChart").getContext("2d"), {
-      type: 'bubble',
-      data: {
-        datasets: [{
-          data: bubblePoints,
-          backgroundColor: 'rgba(201, 138, 58, 0.6)',
-          borderColor: '#E7B067',
-          borderWidth: 1
-        }]
-      },
-      options: {
-        responsive: true, maintainAspectRatio: false,
-        scales: {
-          x: { title: { display: true, text: 'Budget utilized →', color: '#93A7B8', font:{size:11} }, grid: { color: '#2B4152' }, ticks: { color: '#93A7B8' }, min: 0, max: 150 },
-          y: { title: { display: true, text: 'Stage completion', color: '#93A7B8', font:{size:11} }, grid: { color: '#2B4152' }, ticks: { color: '#93A7B8' }, min: 0, max: 100 }
-        },
-        plugins: { legend: { display: false } }
-      }
-    });
-  }
-
-  function renderAll(){
-    renderBoard();
-    renderRoster();
-    renderCharts();
-  }
 
   document.getElementById("regionFilter").addEventListener("click", function(e){
     if(e.target.tagName === "BUTTON"){
       document.querySelectorAll("#regionFilter button").forEach(b => b.classList.remove("active"));
       e.target.classList.add("active");
-      currentFilter = e.target.dataset.region;
+      currentRegionFilter = e.target.dataset.region;
       renderBoard();
     }
   });
@@ -501,6 +310,117 @@
 
   document.getElementById("rosterSearch").addEventListener("input", renderRoster);
 
+  function renderBoard(){
+    const board = document.getElementById("dynamicBoard");
+    const statuses = [...new Set(liveSheetRows.map(r => r.Status))];
+
+    if(statuses.length === 0){
+      board.innerHTML = '<p style="color:var(--text-muted); padding:20px;">正在讀取 Google 試算表資料...</p>';
+      return;
+    }
+
+    board.innerHTML = statuses.map(status => {
+      const filtered = liveSheetRows.filter(r => (currentRegionFilter === "All" || r.Region === currentRegionFilter) && r.Status === status);
+      
+      const cardsHtml = filtered.length ? filtered.map(r => `
+        <div class="card status-on-track">
+          <div class="card-top">
+            <span class="region-pill ${r.Region}">${r.Region}</span>
+            <span style="font-size:11px;color:var(--text-muted);">${r.EmployeeID}</span>
+          </div>
+          <div class="card-title">${r.EmployeeName}</div>
+          <div class="card-vendor">Target: ${r.TargetArrivalDate || 'N/A'}</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">$${r.BudgetSpent?.toLocaleString()} / $${r.BudgetAllocated?.toLocaleString()}</div>
+        </div>
+      `).join('') : '<div class="column-empty">No records</div>';
+
+      return `
+        <div class="column">
+          <div class="column-head">
+            <div class="column-title">${status}</div>
+            <div class="column-count">${filtered.length} pax</div>
+          </div>
+          <div class="column-body">${cardsHtml}</div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function renderRoster(){
+    const container = document.getElementById("rosterContent");
+    const searchQuery = document.getElementById("rosterSearch").value.toLowerCase();
+
+    let filtered = liveSheetRows.filter(p => {
+      let matchReg = (rosterRegFilter === "All" || p.Region === rosterRegFilter);
+      let matchStat = (rosterStatFilter === "All" || p.Status === rosterStatFilter);
+      let matchSearch = (p.EmployeeName?.toLowerCase().includes(searchQuery) || p.EmployeeID?.toLowerCase().includes(searchQuery));
+      return matchReg && matchStat && matchSearch;
+    });
+
+    let statusesToGroup = rosterStatFilter === "All" ? [...new Set(liveSheetRows.map(r => r.Status))] : [rosterStatFilter];
+
+    container.innerHTML = statusesToGroup.map(status => {
+      let groupPeople = filtered.filter(p => p.Status === status);
+      if(groupPeople.length === 0) return '';
+
+      let rows = groupPeople.map(p => `
+        <tr>
+          <td><strong>${p.EmployeeID}</strong></td>
+          <td>${p.EmployeeName}</td>
+          <td><span class="region-pill ${p.Region}">${p.Region}</span></td>
+          <td><div style="background:var(--border-soft);border-radius:99px;width:100px;height:6px;overflow:hidden;"><div style="background:var(--accent);width:65%;height:100%;"></div></div></td>
+          <td>$${p.BudgetSpent?.toLocaleString()} / $${p.BudgetAllocated?.toLocaleString()}</td>
+          <td>${p.TargetArrivalDate}</td>
+        </tr>
+      `).join('');
+
+      return `
+        <div class="roster-section">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <h3 style="font-size:16px;font-weight:700;">${status}</h3>
+            <span style="font-size:12px;color:var(--text-muted);">${groupPeople.length} people</span>
+          </div>
+          <table class="roster-table">
+            <thead>
+              <tr><th>ID</th><th>Name</th><th>Region</th><th>Completion</th><th>Budget</th><th>Target Arrival</th></tr>
+            </thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>
+      `;
+    }).join('') || '<p style="color:var(--text-muted);text-align:center;padding:20px;">No matching records found.</p>';
+  }
+
+  function renderCharts(){
+    let sg = liveSheetRows.filter(r => r.Region === 'SG').length;
+    let ml = liveSheetRows.filter(r => r.Region === 'ML').length;
+    let uae = liveSheetRows.filter(r => r.Region === 'UAE').length;
+
+    if(pieChartInstance) pieChartInstance.destroy();
+    pieChartInstance = new Chart(document.getElementById("headcountPieChart").getContext("2d"), {
+      type: 'doughnut',
+      data: {
+        labels: ['SG', 'ML', 'UAE'],
+        datasets: [{ data: [sg, ml, uae], backgroundColor: ['#3DDC8C', '#F2B84B', '#C98A3A'], borderWidth: 0 }]
+      },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#93A7B8' } } } }
+    });
+
+    let sgSpent = liveSheetRows.filter(r=>r.Region==='SG').reduce((a,b)=>a+(b.BudgetSpent||0),0);
+    let mlSpent = liveSheetRows.filter(r=>r.Region==='ML').reduce((a,b)=>a+(b.BudgetSpent||0),0);
+    let uaeSpent = liveSheetRows.filter(r=>r.Region==='UAE').reduce((a,b)=>a+(b.BudgetSpent||0),0);
+
+    if(barChartInstance) barChartInstance.destroy();
+    barChartInstance = new Chart(document.getElementById("budgetBarChart").getContext("2d"), {
+      type: 'bar',
+      data: {
+        labels: ['SG', 'ML', 'UAE'],
+        datasets: [{ label: 'Spent (USD)', data: [sgSpent, mlSpent, uaeSpent], backgroundColor: ['#256ABF', '#C25124', '#009300'] }]
+      },
+      options: { responsive: true, maintainAspectRatio: false, scales: { x: { ticks: { color: '#93A7B8' } }, y: { ticks: { color: '#93A7B8' } } }, plugins: { legend: { display: false } } }
+    });
+  }
+
   document.querySelectorAll(".tabbtn").forEach(btn => {
     btn.addEventListener("click", function(){
       document.querySelectorAll(".tabbtn").forEach(b => b.classList.remove("active"));
@@ -512,8 +432,6 @@
       }
     });
   });
-
-  renderAll();
 })();
 </script>
 </body>
