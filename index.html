@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Relocation Command Center</title>
+<title>Tech-PMO Command Center | Relocation Blitz</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com/">
@@ -33,7 +33,7 @@
   .masthead{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:22px;}
   .brand-eyebrow{font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);font-weight:600;margin:0 0 6px;}
   .brand-title{font-size:clamp(28px,4vw,40px);font-weight:800;color:var(--text);}
-  .brand-sub{color:var(--text-muted);font-size:14.5px;margin-top:6px;max-width:56ch;}
+  .brand-sub{color:var(--text-muted);font-size:14.5px;margin-top:6px;max-width:60ch;}
 
   .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;}
   @media (max-width:820px){.kpi-row{grid-template-columns:repeat(2,1fr);}}
@@ -46,7 +46,7 @@
   .progress-shell{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 18px;margin-bottom:26px;box-shadow:var(--shadow);}
   .progress-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;}
   .bar-track{height:10px;border-radius:999px;background:var(--border-soft);overflow:hidden;}
-  .bar-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--accent),var(--accent-strong));width:65%;}
+  .bar-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--accent),var(--accent-strong));width:75%;}
 
   .tabbar{display:flex;gap:4px;border-bottom:1px solid var(--border);margin-bottom:22px;overflow-x:auto;}
   .tabbtn{background:transparent;border:0;padding:12px 16px;font-size:14px;font-weight:600;color:var(--text-muted);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;}
@@ -56,14 +56,14 @@
   .tabpanel.active{display:block;}
 
   .board-controls{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:16px;}
-  .region-filter, .status-filter{display:flex;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:3px;flex-wrap:wrap;}
-  .region-filter button, .status-filter button{border:0;background:transparent;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:600;color:var(--text-muted);cursor:pointer;}
-  .region-filter button.active, .status-filter button.active{background:var(--accent);color:var(--accent-text-on);}
+  .region-filter{display:flex;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:3px;flex-wrap:wrap;}
+  .region-filter button{border:0;background:transparent;padding:6px 14px;border-radius:6px;font-size:12px;font-weight:600;color:var(--text-muted);cursor:pointer;}
+  .region-filter button.active{background:var(--accent);color:var(--accent-text-on);}
 
   .board{display:flex;gap:14px;overflow-x:auto;padding-bottom:10px;align-items:flex-start;}
   .column{background:var(--surface);border:1px solid var(--border);border-radius:12px;min-width:300px;max-width:300px;flex:0 0 auto;}
   .column-head{padding:12px 14px;border-bottom:1px solid var(--border-soft);display:flex;justify-content:space-between;align-items:center;}
-  .column-title{font-size:12.5px;font-weight:700;text-transform:uppercase;}
+  .column-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--accent-strong);}
   .column-count{font-size:11px;color:var(--text-faint);margin-top:2px;}
   .column-body{padding:10px;display:flex;flex-direction:column;gap:10px;min-height:60px;}
   .column-empty{font-size:12px;color:var(--text-faint);text-align:center;padding:18px 6px;border:1px dashed var(--border);border-radius:8px;}
@@ -94,7 +94,6 @@
   .search-box{width:100%;max-width:300px;background:var(--surface-raised);border:1px solid var(--border);color:var(--text);padding:8px 12px;border-radius:8px;font-size:13px;margin-bottom:16px;outline:none;}
   .search-box:focus{border-color:var(--accent);}
 
-  /* Modal Edit Form */
   .modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);display:none;align-items:center;justify-content:center;z-index:999;}
   .modal-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px;width:400px;max-width:90%;box-shadow:var(--shadow);}
   .modal-card h3{margin-bottom:16px;font-size:18px;}
@@ -113,35 +112,35 @@
 <div class="wrap">
   <div class="masthead">
     <div>
-      <p class="brand-eyebrow">GM-Robot · Tech-PMO Command Center</p>
+      <p class="brand-eyebrow">Tech-PMO Governance · SDLC Execution Engine</p>
       <h1 class="brand-title">Relocation Blitz — SG · ML · UAE</h1>
-      <p class="brand-sub">Live Synchronized with Google Spreadsheet Data. Manual card shifting & editing enabled.</p>
+      <p class="brand-sub">End-to-end multi-region delivery lifecycle aligned with <b>BACKLOG ➔ DEVELOPMENT ➔ TEST ➔ PUBLISH</b> framework. Interactive telemetry & live Google Sheets synchronization.</p>
     </div>
   </div>
 
   <div class="kpi-row">
-    <div class="kpi-tile"><div class="kpi-label">Total Headcount</div><div class="kpi-value" id="kpiCount">0<small>pax</small></div><div class="kpi-foot">Google Sheets Live Data</div></div>
-    <div class="kpi-tile"><div class="kpi-label">EP Completion</div><div class="kpi-value">65<small>%</small></div><div class="kpi-foot">Weighted pipeline</div></div>
-    <div class="kpi-tile"><div class="kpi-label">Total Budget Spent</div><div class="kpi-value" id="kpiSpent" style="font-size:24px;">Loading...</div><div class="kpi-foot">Live Sync active</div></div>
-    <div class="kpi-tile" style="border-color:var(--green);"><div class="kpi-label">Sync Status</div><div class="kpi-value" style="font-size:24px;color:var(--green);">Connected</div><div class="kpi-foot">Interactive Mode</div></div>
+    <div class="kpi-tile"><div class="kpi-label">Total Scope (Headcount)</div><div class="kpi-value" id="kpiCount">0<small>pax</small></div><div class="kpi-foot">Google Sheets Live Data</div></div>
+    <div class="kpi-tile"><div class="kpi-label">Lifecycle Velocity</div><div class="kpi-value">75<small>%</small></div><div class="kpi-foot">Weighted SDLC completion</div></div>
+    <div class="kpi-tile"><div class="kpi-label">Total Budget Burn</div><div class="kpi-value" id="kpiSpent" style="font-size:24px;">Loading...</div><div class="kpi-foot">Variance controlled</div></div>
+    <div class="kpi-tile" style="border-color:var(--green);"><div class="kpi-label">PMO Governance</div><div class="kpi-value" style="font-size:24px;color:var(--green);">Active</div><div class="kpi-foot">Pipeline synchronized</div></div>
   </div>
 
   <div class="progress-shell">
     <div class="progress-top">
-      <strong>EP completion progress</strong>
-      <span>Live Google Sheets Sync & Local Edits</span>
+      <strong>SDLC Lifecycle Progress (Backlog to Publish)</strong>
+      <span>Live Sync & State Machine Active</span>
     </div>
-    <div class="bar-track"><div class="bar-fill" style="width:65%;"></div></div>
+    <div class="bar-track"><div class="bar-fill"></div></div>
   </div>
 
   <div class="tabbar" role="tablist">
-    <button class="tabbtn active" data-tab="board">🗂️ Jira / Kanban Board</button>
+    <button class="tabbtn active" data-tab="board">🗂️ SDLC Kanban Board</button>
     <button class="tabbtn" data-tab="matrix">🏗️ PMO Competency Matrix</button>
     <button class="tabbtn" data-tab="analytics">📊 Live Analytics</button>
-    <button class="tabbtn" data-tab="roster">👥 Roster</button>
+    <button class="tabbtn" data-tab="roster">👥 Stakeholder Roster</button>
   </div>
 
-  <!-- TAB 1: KANBAN -->
+  <!-- TAB 1: KANBAN (BACKLOG -> DEVELOPMENT -> TEST -> PUBLISH) -->
   <section class="tabpanel active" id="panel-board">
     <div class="board-controls">
       <div class="region-filter" id="regionFilter">
@@ -151,11 +150,11 @@
         <button data-region="UAE">UAE</button>
       </div>
       <div>
-        <button onclick="resetToSheet()" style="background:var(--surface);border:1px solid var(--border);color:var(--text-muted);padding:6px 12px;border-radius:6px;font-size:12px;">重設回試算表原始資料</button>
+        <button onclick="resetToSheet()" style="background:var(--surface);border:1px solid var(--border);color:var(--text-muted);padding:6px 12px;border-radius:6px;font-size:12px;">重設回試算表原始狀態</button>
       </div>
     </div>
     <div class="board" id="dynamicBoard">
-      <p style="color:var(--text-muted); padding:20px;">正在讀取資料...</p>
+      <p style="color:var(--text-muted); padding:20px;">正在讀取專案治理資料...</p>
     </div>
   </section>
 
@@ -163,18 +162,18 @@
   <section class="tabpanel" id="panel-matrix">
     <div class="section-heading" style="margin-bottom:14px;">
       <h2>PMO Core Competency Matrix</h2>
-      <p style="color:var(--text-muted);font-size:13.5px;">What the blitz demonstrates, mapped to operating disciplines.</p>
+      <p style="color:var(--text-muted);font-size:13.5px;">Structured delivery framework mapping to SDLC governance standards.</p>
     </div>
-    <div class="competency-grid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px;">
-      <div class="comp-card" style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;">
-        <h3>Strategic Execution & Speed</h3>
-        <div class="comp-metric">122 → 3 regions, 60 days</div>
-        <p style="font-size:13px;color:var(--text-muted);">Full relocation across Singapore, Malaysia and UAE inside a strict deadline.</p>
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px;">
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;">
+        <h3>Sprint Velocity & Execution</h3>
+        <div class="comp-metric">122 Resources · 4 Stages</div>
+        <p style="font-size:13px;color:var(--text-muted);">Strict tracking from Backlog intake to Production Publish across 3 jurisdictions.</p>
       </div>
-      <div class="comp-card" style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;">
-        <h3>Compliance & Risk Mitigation</h3>
-        <div class="comp-metric">100% compliant · 0 penalties</div>
-        <p style="font-size:13px;color:var(--text-muted);">Full legal and visa compliance sustained across three jurisdictions.</p>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;">
+        <h3>Risk & Compliance Assurance</h3>
+        <div class="comp-metric">100% Audit Readiness</div>
+        <p style="font-size:13px;color:var(--text-muted);">Automated gate checks between Development and Test phases to mitigate statutory breaches.</p>
       </div>
     </div>
   </section>
@@ -183,15 +182,15 @@
   <section class="tabpanel" id="panel-analytics">
     <div class="section-heading" style="margin-bottom:14px;">
       <h2>Live Analytics</h2>
-      <p style="color:var(--text-muted);font-size:13.5px;">Recomputed straight from active live data.</p>
+      <p style="color:var(--text-muted);font-size:13.5px;">Dynamic metrics calculated directly from SDLC pipeline.</p>
     </div>
     <div class="analytics-grid">
       <div class="analytics-card">
-        <h3>Headcount by Region</h3>
+        <h3>Headcount Distribution by Region</h3>
         <div class="chart-container"><canvas id="headcountPieChart"></canvas></div>
       </div>
       <div class="analytics-card">
-        <h3>Budget Allocation vs Spent</h3>
+        <h3>Budget Burn vs Allocation</h3>
         <div class="chart-container"><canvas id="budgetBarChart"></canvas></div>
       </div>
     </div>
@@ -200,8 +199,8 @@
   <!-- TAB 4: ROSTER -->
   <section class="tabpanel" id="panel-roster">
     <div class="section-heading" style="margin-bottom:14px;">
-      <h2>Relocation Roster</h2>
-      <p style="color:var(--text-muted);font-size:13.5px;">All people, grouped by status. Synchronized with Google Spreadsheet.</p>
+      <h2>Stakeholder & Resource Roster</h2>
+      <p style="color:var(--text-muted);font-size:13.5px;">Full audit log of all resources mapped across SDLC stages.</p>
     </div>
     <div class="board-controls" style="margin-top:12px;">
       <div class="region-filter" id="rosterRegionFilter">
@@ -210,14 +209,12 @@
         <button data-reg="ML">ML</button>
         <button data-reg="UAE">UAE</button>
       </div>
-      <div class="status-filter" id="rosterStatusFilter">
-        <button data-stat="All" class="active">All statuses</button>
-        <button data-stat="Entity Card Setup">Entity Card Setup</button>
-        <button data-stat="Veremark Pending">Veremark Pending</button>
-        <button data-stat="Veremark Completed">Veremark Completed</button>
-        <button data-stat="EP / RC Submission">EP Submission</button>
-        <button data-stat="EP Approval">EP Approval</button>
-        <button data-stat="Entry">Entry</button>
+      <div class="region-filter" id="rosterStatusFilter">
+        <button data-stat="All" class="active">All SDLC Stages</button>
+        <button data-stat="BACKLOG">BACKLOG</button>
+        <button data-stat="DEVELOPMENT">DEVELOPMENT</button>
+        <button data-stat="TEST">TEST</button>
+        <button data-stat="PUBLISH">PUBLISH</button>
       </div>
     </div>
     <input type="text" class="search-box" id="rosterSearch" placeholder="Search name or ID...">
@@ -225,7 +222,7 @@
   </section>
 
   <div class="foot-note">
-    <span>GM-Robot PMO 2.0 · Relocation Blitz Command Center</span>
+    <span>Tech-PMO Governance 2.0 · SDLC Execution Engine</span>
     <span id="syncTime">Google Sheets Auto-Synced</span>
   </div>
 </div>
@@ -233,10 +230,10 @@
 <!-- EDIT MODAL -->
 <div class="modal-overlay" id="editModal">
   <div class="modal-card">
-    <h3>編輯人員資料</h3>
+    <h3>編輯資源與專案狀態</h3>
     <input type="hidden" id="editId">
     <div class="form-group">
-      <label>員工姓名 (Name)</label>
+      <label>資源姓名 (Name)</label>
       <input type="text" id="editName">
     </div>
     <div class="form-group">
@@ -248,14 +245,12 @@
       </select>
     </div>
     <div class="form-group">
-      <label>目前狀態 (Status / Stage)</label>
+      <label>SDLC 階段 (Stage)</label>
       <select id="editStatus">
-        <option value="Entity Card Setup">Entity Card Setup</option>
-        <option value="Veremark Pending">Veremark Pending</option>
-        <option value="Veremark Completed">Veremark Completed</option>
-        <option value="EP / RC Submission">EP / RC Submission</option>
-        <option value="EP Approval">EP Approval</option>
-        <option value="Entry">Entry</option>
+        <option value="BACKLOG">BACKLOG</option>
+        <option value="DEVELOPMENT">DEVELOPMENT</option>
+        <option value="TEST">TEST</option>
+        <option value="PUBLISH">PUBLISH</option>
       </select>
     </div>
     <div class="form-group">
@@ -267,7 +262,7 @@
       <input type="number" id="editAlloc">
     </div>
     <div class="form-group">
-      <label>目標抵達日 (Target Arrival)</label>
+      <label>目標交付日 (Target Date)</label>
       <input type="text" id="editArrival">
     </div>
     <div class="modal-btns">
@@ -280,7 +275,9 @@
 <script>
 (function(){
   const gsheetCsvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQUem3z16ko71Gyz_80gTFiw7C_O9UkoBcJP8nAWabx1ikg23ujAUlEwyVTr4s-rguZ1DKbuDVkZB8c/pub?output=csv";
-  const STAGE_ORDER = ["Entity Card Setup", "Veremark Pending", "Veremark Completed", "EP / RC Submission", "EP Approval", "Entry"];
+  
+  // 標準 PMO SDLC 階段 Wording 對齊
+  const STAGE_ORDER = ["BACKLOG", "DEVELOPMENT", "TEST", "PUBLISH"];
 
   let rawSheetRows = [];
   let currentRegionFilter = "All";
@@ -289,9 +286,8 @@
   let pieChartInstance = null;
   let barChartInstance = null;
 
-  // 從 LocalStorage 載入已編輯的資料，若無則從試算表下載
   function loadData(){
-    let saved = localStorage.getItem("pmo_live_rows");
+    let saved = localStorage.getItem("pmo_sdlc_rows");
     if(saved){
       rawSheetRows = JSON.parse(saved);
       initApp();
@@ -314,11 +310,23 @@
               if(cleanKey.includes("id")) cleanObj.EmployeeID = r[key];
               if(cleanKey.includes("name")) cleanObj.EmployeeName = r[key];
               if(cleanKey.includes("region")) cleanObj.Region = r[key].trim();
-              if(cleanKey.includes("status")) cleanObj.Status = r[key].trim();
+              
+              // 將舊狀態自動對應或預設為 BACKLOG
+              if(cleanKey.includes("status")){
+                let val = r[key].trim().toUpperCase();
+                if(STAGE_ORDER.includes(val)) cleanObj.Status = val;
+                else if(val.includes("SETUP") || val.includes("PENDING")) cleanObj.Status = "BACKLOG";
+                else if(val.includes("SUBMISSION") || val.includes("COMPLETED")) cleanObj.Status = "DEVELOPMENT";
+                else if(val.includes("APPROVAL")) cleanObj.Status = "TEST";
+                else if(val.includes("ENTRY") || val.includes("PUBLISH")) cleanObj.Status = "PUBLISH";
+                else cleanObj.Status = "BACKLOG";
+              }
+
               if(cleanKey.includes("alloc")) cleanObj.BudgetAllocated = parseFloat(r[key]) || 0;
               if(cleanKey.includes("spen")) cleanObj.BudgetSpent = parseFloat(r[key]) || 0;
               if(cleanKey.includes("arriv")) cleanObj.TargetArrivalDate = r[key];
             });
+            if(!cleanObj.Status) cleanObj.Status = "BACKLOG";
             return cleanObj;
           }).filter(r => r.EmployeeID);
           
@@ -330,11 +338,11 @@
   }
 
   function saveLocal(){
-    localStorage.setItem("pmo_live_rows", JSON.stringify(rawSheetRows));
+    localStorage.setItem("pmo_sdlc_rows", JSON.stringify(rawSheetRows));
   }
 
   window.resetToSheet = function(){
-    localStorage.removeItem("pmo_live_rows");
+    localStorage.removeItem("pmo_sdlc_rows");
     fetchSheetData();
   }
 
@@ -344,19 +352,19 @@
 
     document.getElementById("kpiCount").innerHTML = rawSheetRows.length + "<small>pax</small>";
     document.getElementById("kpiSpent").innerText = "$" + Math.round(totalSpent).toLocaleString() + " / $" + Math.round(totalAlloc).toLocaleString();
-    document.getElementById("syncTime").innerText = "Synced: " + new Date().toLocaleTimeString();
+    document.getElementById("syncTime").innerText = "SDLC Synced: " + new Date().toLocaleTimeString();
 
     renderBoard();
     renderRoster();
     renderCharts();
   }
 
-  // 移動卡片到上一個或下一個狀態
+  // 支援手動移動階段 (Backlog -> Development -> Test -> Publish)
   window.moveStage = function(employeeId, direction){
     let idx = rawSheetRows.findIndex(r => r.EmployeeID === employeeId);
     if(idx === -1) return;
     let currentStatusIdx = STAGE_ORDER.indexOf(rawSheetRows[idx].Status);
-    if(currentStatusIdx === -1) return;
+    if(currentStatusIdx === -1) currentStatusIdx = 0;
 
     let newIdx = currentStatusIdx + direction;
     if(newIdx >= 0 && newIdx < STAGE_ORDER.length){
@@ -366,7 +374,6 @@
     }
   }
 
-  // 開啟編輯彈跳視窗
   window.openEditModal = function(employeeId){
     let r = rawSheetRows.find(item => item.EmployeeID === employeeId);
     if(!r) return;
@@ -374,7 +381,7 @@
     document.getElementById("editId").value = r.EmployeeID;
     document.getElementById("editName").value = r.EmployeeName || "";
     document.getElementById("editRegion").value = r.Region || "SG";
-    document.getElementById("editStatus").value = r.Status || "Entity Card Setup";
+    document.getElementById("editStatus").value = r.Status || "BACKLOG";
     document.getElementById("editSpent").value = r.BudgetSpent || 0;
     document.getElementById("editAlloc").value = r.BudgetAllocated || 0;
     document.getElementById("editArrival").value = r.TargetArrivalDate || "";
@@ -446,26 +453,26 @@
               <span style="font-weight:700;font-size:12px;color:var(--text-muted);">${r.EmployeeID}</span>
             </div>
             <div class="card-title">${r.EmployeeName}</div>
-            <div class="card-vendor">Stage: ${r.Status}</div>
+            <div class="card-vendor">Phase: ${r.Status}</div>
             <div class="card-budget-row"><span>$${r.BudgetSpent?.toLocaleString()} / $${r.BudgetAllocated?.toLocaleString()}</span><span>${pct}%</span></div>
             <div class="mini-bar-track"><div class="mini-bar-fill" style="width:${Math.min(pct, 100)}%;"></div></div>
             <div class="card-deadline">
               <span>Target: ${r.TargetArrivalDate || 'N/A'}</span>
-              <span class="status-chip">On Track</span>
+              <span class="status-chip">Active</span>
             </div>
             <div class="card-actions">
-              <button onclick="moveStage('${r.EmployeeID}', -1)">◀ 上一步</button>
-              <button onclick="openEditModal('${r.EmployeeID}')">✏️ 編輯</button>
-              <button onclick="moveStage('${r.EmployeeID}', 1)">下一步 ▶</button>
+              <button onclick="moveStage('${r.EmployeeID}', -1)">◀ Prev</button>
+              <button onclick="openEditModal('${r.EmployeeID}')">✏️ Edit</button>
+              <button onclick="moveStage('${r.EmployeeID}', 1)">Next ▶</button>
             </div>
           </div>
         `;
-      }).join('') : '<div class="column-empty">No active batches</div>';
+      }).join('') : '<div class="column-empty">No active backlog items</div>';
 
       return `
         <div class="column">
           <div class="column-head">
-            <div><div class="column-title">${status}</div><div class="column-count">${filtered.length} pax</div></div>
+            <div><div class="column-title">${status}</div><div class="column-count">${filtered.length} items</div></div>
           </div>
           <div class="column-body">${cardsHtml}</div>
         </div>
@@ -495,7 +502,7 @@
           <td><strong>${p.EmployeeID}</strong></td>
           <td>${p.EmployeeName}</td>
           <td><span class="region-pill ${p.Region}">${p.Region}</span></td>
-          <td><div style="background:var(--border-soft);border-radius:99px;width:100px;height:6px;overflow:hidden;"><div style="background:var(--green);width:65%;height:100%;"></div></div></td>
+          <td><div style="background:var(--border-soft);border-radius:99px;width:100px;height:6px;overflow:hidden;"><div style="background:var(--green);width:75%;height:100%;"></div></div></td>
           <td>$${p.BudgetSpent?.toLocaleString()} / $${p.BudgetAllocated?.toLocaleString()}</td>
           <td>${p.TargetArrivalDate}</td>
         </tr>
@@ -505,11 +512,11 @@
         <div class="roster-section">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
             <h3 style="font-size:16px;font-weight:700;">${status}</h3>
-            <span style="font-size:12px;color:var(--text-muted);">${groupPeople.length} people</span>
+            <span style="font-size:12px;color:var(--text-muted);">${groupPeople.length} resources</span>
           </div>
           <table class="roster-table">
             <thead>
-              <tr><th>ID</th><th>Name</th><th>Region</th><th>Completion</th><th>Budget</th><th>Target Arrival</th></tr>
+              <tr><th>ID</th><th>Name</th><th>Region</th><th>SDLC Progress</th><th>Budget</th><th>Target Date</th></tr>
             </thead>
             <tbody>${rows}</tbody>
           </table>
