@@ -59,9 +59,6 @@
   .region-filter, .status-filter{display:flex;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:3px;flex-wrap:wrap;}
   .region-filter button, .status-filter button{border:0;background:transparent;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:600;color:var(--text-muted);cursor:pointer;}
   .region-filter button.active, .status-filter button.active{background:var(--accent);color:var(--accent-text-on);}
-  .board-legend{display:flex;gap:14px;font-size:12px;color:var(--text-muted);align-items:center;}
-  .dot{width:8px;height:8px;border-radius:50%;display:inline-block;}
-  .dot.green{background:var(--green);} .dot.amber{background:var(--amber);} .dot.red{background:var(--red);}
 
   .board{display:flex;gap:14px;overflow-x:auto;padding-bottom:10px;align-items:flex-start;}
   .column{background:var(--surface);border:1px solid var(--border);border-radius:12px;min-width:300px;max-width:300px;flex:0 0 auto;}
@@ -82,10 +79,14 @@
   .card-budget-row{display:flex;justify-content:space-between;font-size:11.5px;color:var(--text-muted);margin-bottom:4px;}
   .mini-bar-track{height:6px;background:var(--border-soft);border-radius:999px;overflow:hidden;margin-bottom:8px;}
   .mini-bar-fill{height:100%;border-radius:999px;background:var(--green);}
-  .card-deadline{display:flex;align-items:center;justify-content:space-between;font-size:11.5px;margin-bottom:8px;}
+  .card-deadline{display:flex;align-items:center;justify-content:space-between;font-size:11.5px;margin-bottom:10px;}
   .status-chip{font-size:10px;font-weight:700;padding:2px 7px;border-radius:5px;background:var(--green-soft);color:var(--green);}
+  
+  .card-actions{display:flex;gap:6px;border-top:1px solid var(--border-soft);padding-top:8px;}
+  .card-actions button{flex:1;background:var(--surface);border:1px solid var(--border);color:var(--text);padding:5px;border-radius:6px;font-size:11px;font-weight:600;}
+  .card-actions button:hover{background:var(--surface-hover);color:var(--accent-strong);}
 
-  /* Roster Table Styles */
+  /* Roster & Modal */
   .roster-section{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;box-shadow:var(--shadow);margin-bottom:20px;}
   .roster-table{width:100%;border-collapse:collapse;margin-top:12px;font-size:13px;}
   .roster-table th, .roster-table td{padding:12px 16px;text-align:left;border-bottom:1px solid var(--border-soft);}
@@ -93,13 +94,16 @@
   .search-box{width:100%;max-width:300px;background:var(--surface-raised);border:1px solid var(--border);color:var(--text);padding:8px 12px;border-radius:8px;font-size:13px;margin-bottom:16px;outline:none;}
   .search-box:focus{border-color:var(--accent);}
 
-  .competency-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:34px;}
-  .comp-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;box-shadow:var(--shadow);}
-  .comp-metric{font-family:"Big Shoulders Display";font-size:28px;font-weight:800;color:var(--accent-strong);margin:6px 0 8px;}
-  .analytics-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:20px;}
-  @media(max-width:768px){.analytics-grid{grid-template-columns:1fr;}}
-  .analytics-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;box-shadow:var(--shadow);display:flex;flex-direction:column;align-items:flex-start;}
-  .chart-container{position:relative;width:100%;height:260px;margin-top:10px;}
+  /* Modal Edit Form */
+  .modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);display:none;align-items:center;justify-content:center;z-index:999;}
+  .modal-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px;width:400px;max-width:90%;box-shadow:var(--shadow);}
+  .modal-card h3{margin-bottom:16px;font-size:18px;}
+  .form-group{margin-bottom:12px;}
+  .form-group label{display:block;font-size:12px;color:var(--text-muted);margin-bottom:4px;}
+  .form-group input, .form-group select{width:100%;background:var(--surface-raised);border:1px solid var(--border);color:var(--text);padding:8px;border-radius:6px;font-size:13px;}
+  .modal-btns{display:flex;gap:10px;margin-top:20px;}
+  .modal-btns button{flex:1;padding:8px;border-radius:6px;border:1px solid var(--border);font-weight:600;}
+  .btn-save{background:var(--accent);color:var(--accent-text-on);border:0!important;}
 
   .foot-note{margin-top:40px;padding-top:16px;border-top:1px solid var(--border-soft);font-size:12px;color:var(--text-faint);display:flex;justify-content:space-between;}
 </style>
@@ -111,21 +115,21 @@
     <div>
       <p class="brand-eyebrow">GM-Robot · Tech-PMO Command Center</p>
       <h1 class="brand-title">Relocation Blitz — SG · ML · UAE</h1>
-      <p class="brand-sub">Live Synchronized with Google Spreadsheet Data.</p>
+      <p class="brand-sub">Live Synchronized with Google Spreadsheet Data. Manual card shifting & editing enabled.</p>
     </div>
   </div>
 
   <div class="kpi-row">
-    <div class="kpi-tile"><div class="kpi-label">Total Headcount</div><div class="kpi-value" id="kpiCount">122<small>pax</small></div><div class="kpi-foot">Google Sheets Live Data</div></div>
+    <div class="kpi-tile"><div class="kpi-label">Total Headcount</div><div class="kpi-value" id="kpiCount">0<small>pax</small></div><div class="kpi-foot">Google Sheets Live Data</div></div>
     <div class="kpi-tile"><div class="kpi-label">EP Completion</div><div class="kpi-value">65<small>%</small></div><div class="kpi-foot">Weighted pipeline</div></div>
     <div class="kpi-tile"><div class="kpi-label">Total Budget Spent</div><div class="kpi-value" id="kpiSpent" style="font-size:24px;">Loading...</div><div class="kpi-foot">Live Sync active</div></div>
-    <div class="kpi-tile" style="border-color:var(--green);"><div class="kpi-label">Sync Status</div><div class="kpi-value" style="font-size:24px;color:var(--green);">Connected</div><div class="kpi-foot">Auto-sync active</div></div>
+    <div class="kpi-tile" style="border-color:var(--green);"><div class="kpi-label">Sync Status</div><div class="kpi-value" style="font-size:24px;color:var(--green);">Connected</div><div class="kpi-foot">Interactive Mode</div></div>
   </div>
 
   <div class="progress-shell">
     <div class="progress-top">
       <strong>EP completion progress</strong>
-      <span>Live Google Sheets Sync</span>
+      <span>Live Google Sheets Sync & Local Edits</span>
     </div>
     <div class="bar-track"><div class="bar-fill" style="width:65%;"></div></div>
   </div>
@@ -146,37 +150,40 @@
         <button data-region="ML">ML</button>
         <button data-region="UAE">UAE</button>
       </div>
+      <div>
+        <button onclick="resetToSheet()" style="background:var(--surface);border:1px solid var(--border);color:var(--text-muted);padding:6px 12px;border-radius:6px;font-size:12px;">重設回試算表原始資料</button>
+      </div>
     </div>
     <div class="board" id="dynamicBoard">
-      <p style="color:var(--text-muted); padding:20px;">正在從 Google 試算表同步看板資料...</p>
+      <p style="color:var(--text-muted); padding:20px;">正在讀取資料...</p>
     </div>
   </section>
 
   <!-- TAB 2: MATRIX -->
   <section class="tabpanel" id="panel-matrix">
-    <div class="section-heading">
+    <div class="section-heading" style="margin-bottom:14px;">
       <h2>PMO Core Competency Matrix</h2>
-      <p>What the blitz demonstrates, mapped to operating disciplines.</p>
+      <p style="color:var(--text-muted);font-size:13.5px;">What the blitz demonstrates, mapped to operating disciplines.</p>
     </div>
-    <div class="competency-grid">
-      <div class="comp-card">
+    <div class="competency-grid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px;">
+      <div class="comp-card" style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;">
         <h3>Strategic Execution & Speed</h3>
         <div class="comp-metric">122 → 3 regions, 60 days</div>
-        <p>Full relocation across Singapore, Malaysia and UAE inside a strict deadline.</p>
+        <p style="font-size:13px;color:var(--text-muted);">Full relocation across Singapore, Malaysia and UAE inside a strict deadline.</p>
       </div>
-      <div class="comp-card">
+      <div class="comp-card" style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;">
         <h3>Compliance & Risk Mitigation</h3>
         <div class="comp-metric">100% compliant · 0 penalties</div>
-        <p>Full legal and visa compliance sustained across three jurisdictions.</p>
+        <p style="font-size:13px;color:var(--text-muted);">Full legal and visa compliance sustained across three jurisdictions.</p>
       </div>
     </div>
   </section>
 
   <!-- TAB 3: LIVE ANALYTICS -->
   <section class="tabpanel" id="panel-analytics">
-    <div class="section-heading">
+    <div class="section-heading" style="margin-bottom:14px;">
       <h2>Live Analytics</h2>
-      <p>Recomputed straight from Google Sheets live data.</p>
+      <p style="color:var(--text-muted);font-size:13.5px;">Recomputed straight from active live data.</p>
     </div>
     <div class="analytics-grid">
       <div class="analytics-card">
@@ -192,9 +199,9 @@
 
   <!-- TAB 4: ROSTER -->
   <section class="tabpanel" id="panel-roster">
-    <div class="section-heading">
+    <div class="section-heading" style="margin-bottom:14px;">
       <h2>Relocation Roster</h2>
-      <p>All people, grouped by status. Synchronized with Google Spreadsheet.</p>
+      <p style="color:var(--text-muted);font-size:13.5px;">All people, grouped by status. Synchronized with Google Spreadsheet.</p>
     </div>
     <div class="board-controls" style="margin-top:12px;">
       <div class="region-filter" id="rosterRegionFilter">
@@ -223,52 +230,178 @@
   </div>
 </div>
 
+<!-- EDIT MODAL -->
+<div class="modal-overlay" id="editModal">
+  <div class="modal-card">
+    <h3>編輯人員資料</h3>
+    <input type="hidden" id="editId">
+    <div class="form-group">
+      <label>員工姓名 (Name)</label>
+      <input type="text" id="editName">
+    </div>
+    <div class="form-group">
+      <label>區域 (Region)</label>
+      <select id="editRegion">
+        <option value="SG">SG</option>
+        <option value="ML">ML</option>
+        <option value="UAE">UAE</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>目前狀態 (Status / Stage)</label>
+      <select id="editStatus">
+        <option value="Entity Card Setup">Entity Card Setup</option>
+        <option value="Veremark Pending">Veremark Pending</option>
+        <option value="Veremark Completed">Veremark Completed</option>
+        <option value="EP / RC Submission">EP / RC Submission</option>
+        <option value="EP Approval">EP Approval</option>
+        <option value="Entry">Entry</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>已花費金額 ($)</label>
+      <input type="number" id="editSpent">
+    </div>
+    <div class="form-group">
+      <label>預算配置 ($)</label>
+      <input type="number" id="editAlloc">
+    </div>
+    <div class="form-group">
+      <label>目標抵達日 (Target Arrival)</label>
+      <input type="text" id="editArrival">
+    </div>
+    <div class="modal-btns">
+      <button onclick="closeModal()">取消</button>
+      <button class="btn-save" onclick="saveModal()">儲存變更</button>
+    </div>
+  </div>
+</div>
+
 <script>
 (function(){
   const gsheetCsvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQUem3z16ko71Gyz_80gTFiw7C_O9UkoBcJP8nAWabx1ikg23ujAUlEwyVTr4s-rguZ1DKbuDVkZB8c/pub?output=csv";
   const STAGE_ORDER = ["Entity Card Setup", "Veremark Pending", "Veremark Completed", "EP / RC Submission", "EP Approval", "Entry"];
 
-  let liveSheetRows = [];
+  let rawSheetRows = [];
   let currentRegionFilter = "All";
   let rosterRegFilter = "All";
   let rosterStatFilter = "All";
   let pieChartInstance = null;
   let barChartInstance = null;
 
-  Papa.parse(gsheetCsvUrl, {
-    download: true,
-    header: true,
-    skipEmptyLines: true,
-    complete: function(results) {
-      if(results.data && results.data.length > 0) {
-        liveSheetRows = results.data.map(r => {
-          let cleanObj = {};
-          Object.keys(r).forEach(key => {
-            let cleanKey = key.trim().toLowerCase();
-            if(cleanKey.includes("id")) cleanObj.EmployeeID = r[key];
-            if(cleanKey.includes("name")) cleanObj.EmployeeName = r[key];
-            if(cleanKey.includes("region")) cleanObj.Region = r[key].trim();
-            if(cleanKey.includes("status")) cleanObj.Status = r[key].trim();
-            if(cleanKey.includes("alloc")) cleanObj.BudgetAllocated = parseFloat(r[key]) || 0;
-            if(cleanKey.includes("spen")) cleanObj.BudgetSpent = parseFloat(r[key]) || 0;
-            if(cleanKey.includes("arriv")) cleanObj.TargetArrivalDate = r[key];
-          });
-          return cleanObj;
-        }).filter(r => r.EmployeeID);
-
-        let totalSpent = liveSheetRows.reduce((acc, r) => acc + (r.BudgetSpent || 0), 0);
-        let totalAlloc = liveSheetRows.reduce((acc, r) => acc + (r.BudgetAllocated || 0), 0);
-
-        document.getElementById("kpiCount").innerHTML = liveSheetRows.length + "<small>pax</small>";
-        document.getElementById("kpiSpent").innerText = "$" + Math.round(totalSpent).toLocaleString() + " / $" + Math.round(totalAlloc).toLocaleString();
-        document.getElementById("syncTime").innerText = "Google Sheets Live Synced: " + new Date().toLocaleTimeString();
-
-        renderBoard();
-        renderRoster();
-        renderCharts();
-      }
+  // 從 LocalStorage 載入已編輯的資料，若無則從試算表下載
+  function loadData(){
+    let saved = localStorage.getItem("pmo_live_rows");
+    if(saved){
+      rawSheetRows = JSON.parse(saved);
+      initApp();
+    } else {
+      fetchSheetData();
     }
-  });
+  }
+
+  function fetchSheetData(){
+    Papa.parse(gsheetCsvUrl, {
+      download: true,
+      header: true,
+      skipEmptyLines: true,
+      complete: function(results) {
+        if(results.data && results.data.length > 0) {
+          rawSheetRows = results.data.map(r => {
+            let cleanObj = {};
+            Object.keys(r).forEach(key => {
+              let cleanKey = key.trim().toLowerCase();
+              if(cleanKey.includes("id")) cleanObj.EmployeeID = r[key];
+              if(cleanKey.includes("name")) cleanObj.EmployeeName = r[key];
+              if(cleanKey.includes("region")) cleanObj.Region = r[key].trim();
+              if(cleanKey.includes("status")) cleanObj.Status = r[key].trim();
+              if(cleanKey.includes("alloc")) cleanObj.BudgetAllocated = parseFloat(r[key]) || 0;
+              if(cleanKey.includes("spen")) cleanObj.BudgetSpent = parseFloat(r[key]) || 0;
+              if(cleanKey.includes("arriv")) cleanObj.TargetArrivalDate = r[key];
+            });
+            return cleanObj;
+          }).filter(r => r.EmployeeID);
+          
+          saveLocal();
+          initApp();
+        }
+      }
+    });
+  }
+
+  function saveLocal(){
+    localStorage.setItem("pmo_live_rows", JSON.stringify(rawSheetRows));
+  }
+
+  window.resetToSheet = function(){
+    localStorage.removeItem("pmo_live_rows");
+    fetchSheetData();
+  }
+
+  function initApp(){
+    let totalSpent = rawSheetRows.reduce((acc, r) => acc + (r.BudgetSpent || 0), 0);
+    let totalAlloc = rawSheetRows.reduce((acc, r) => acc + (r.BudgetAllocated || 0), 0);
+
+    document.getElementById("kpiCount").innerHTML = rawSheetRows.length + "<small>pax</small>";
+    document.getElementById("kpiSpent").innerText = "$" + Math.round(totalSpent).toLocaleString() + " / $" + Math.round(totalAlloc).toLocaleString();
+    document.getElementById("syncTime").innerText = "Synced: " + new Date().toLocaleTimeString();
+
+    renderBoard();
+    renderRoster();
+    renderCharts();
+  }
+
+  // 移動卡片到上一個或下一個狀態
+  window.moveStage = function(employeeId, direction){
+    let idx = rawSheetRows.findIndex(r => r.EmployeeID === employeeId);
+    if(idx === -1) return;
+    let currentStatusIdx = STAGE_ORDER.indexOf(rawSheetRows[idx].Status);
+    if(currentStatusIdx === -1) return;
+
+    let newIdx = currentStatusIdx + direction;
+    if(newIdx >= 0 && newIdx < STAGE_ORDER.length){
+      rawSheetRows[idx].Status = STAGE_ORDER[newIdx];
+      saveLocal();
+      initApp();
+    }
+  }
+
+  // 開啟編輯彈跳視窗
+  window.openEditModal = function(employeeId){
+    let r = rawSheetRows.find(item => item.EmployeeID === employeeId);
+    if(!r) return;
+
+    document.getElementById("editId").value = r.EmployeeID;
+    document.getElementById("editName").value = r.EmployeeName || "";
+    document.getElementById("editRegion").value = r.Region || "SG";
+    document.getElementById("editStatus").value = r.Status || "Entity Card Setup";
+    document.getElementById("editSpent").value = r.BudgetSpent || 0;
+    document.getElementById("editAlloc").value = r.BudgetAllocated || 0;
+    document.getElementById("editArrival").value = r.TargetArrivalDate || "";
+
+    document.getElementById("editModal").style.display = "flex";
+  }
+
+  window.closeModal = function(){
+    document.getElementById("editModal").style.display = "none";
+  }
+
+  window.saveModal = function(){
+    let id = document.getElementById("editId").value;
+    let r = rawSheetRows.find(item => item.EmployeeID === id);
+    if(r){
+      r.EmployeeName = document.getElementById("editName").value;
+      r.Region = document.getElementById("editRegion").value;
+      r.Status = document.getElementById("editStatus").value;
+      r.BudgetSpent = parseFloat(document.getElementById("editSpent").value) || 0;
+      r.BudgetAllocated = parseFloat(document.getElementById("editAlloc").value) || 0;
+      r.TargetArrivalDate = document.getElementById("editArrival").value;
+
+      saveLocal();
+      closeModal();
+      initApp();
+    }
+  }
 
   document.getElementById("regionFilter").addEventListener("click", function(e){
     if(e.target.tagName === "BUTTON"){
@@ -301,10 +434,8 @@
 
   function renderBoard(){
     const board = document.getElementById("dynamicBoard");
-    const statuses = STAGE_ORDER;
-
-    board.innerHTML = statuses.map(status => {
-      const filtered = liveSheetRows.filter(r => (currentRegionFilter === "All" || r.Region === currentRegionFilter) && r.Status === status);
+    board.innerHTML = STAGE_ORDER.map(status => {
+      const filtered = rawSheetRows.filter(r => (currentRegionFilter === "All" || r.Region === currentRegionFilter) && r.Status === status);
       
       const cardsHtml = filtered.length ? filtered.map(r => {
         let pct = r.BudgetAllocated ? Math.round((r.BudgetSpent / r.BudgetAllocated) * 100) : 0;
@@ -312,7 +443,7 @@
           <div class="card status-on-track">
             <div class="card-top">
               <span class="region-pill ${r.Region}">${r.Region}</span>
-              <span class="card-pax">${r.EmployeeID}</span>
+              <span style="font-weight:700;font-size:12px;color:var(--text-muted);">${r.EmployeeID}</span>
             </div>
             <div class="card-title">${r.EmployeeName}</div>
             <div class="card-vendor">Stage: ${r.Status}</div>
@@ -321,6 +452,11 @@
             <div class="card-deadline">
               <span>Target: ${r.TargetArrivalDate || 'N/A'}</span>
               <span class="status-chip">On Track</span>
+            </div>
+            <div class="card-actions">
+              <button onclick="moveStage('${r.EmployeeID}', -1)">◀ 上一步</button>
+              <button onclick="openEditModal('${r.EmployeeID}')">✏️ 編輯</button>
+              <button onclick="moveStage('${r.EmployeeID}', 1)">下一步 ▶</button>
             </div>
           </div>
         `;
@@ -341,7 +477,7 @@
     const container = document.getElementById("rosterContent");
     const searchQuery = document.getElementById("rosterSearch").value.toLowerCase();
 
-    let filtered = liveSheetRows.filter(p => {
+    let filtered = rawSheetRows.filter(p => {
       let matchReg = (rosterRegFilter === "All" || p.Region === rosterRegFilter);
       let matchStat = (rosterStatFilter === "All" || p.Status === rosterStatFilter);
       let matchSearch = (p.EmployeeName?.toLowerCase().includes(searchQuery) || p.EmployeeID?.toLowerCase().includes(searchQuery));
@@ -383,9 +519,9 @@
   }
 
   function renderCharts(){
-    let sg = liveSheetRows.filter(r => r.Region === 'SG').length;
-    let ml = liveSheetRows.filter(r => r.Region === 'ML').length;
-    let uae = liveSheetRows.filter(r => r.Region === 'UAE').length;
+    let sg = rawSheetRows.filter(r => r.Region === 'SG').length;
+    let ml = rawSheetRows.filter(r => r.Region === 'ML').length;
+    let uae = rawSheetRows.filter(r => r.Region === 'UAE').length;
 
     if(pieChartInstance) pieChartInstance.destroy();
     pieChartInstance = new Chart(document.getElementById("headcountPieChart").getContext("2d"), {
@@ -397,9 +533,9 @@
       options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#93A7B8' } } } }
     });
 
-    let sgSpent = liveSheetRows.filter(r=>r.Region==='SG').reduce((a,b)=>a+(b.BudgetSpent||0),0);
-    let mlSpent = liveSheetRows.filter(r=>r.Region==='ML').reduce((a,b)=>a+(b.BudgetSpent||0),0);
-    let uaeSpent = liveSheetRows.filter(r=>r.Region==='UAE').reduce((a,b)=>a+(b.BudgetSpent||0),0);
+    let sgSpent = rawSheetRows.filter(r=>r.Region==='SG').reduce((a,b)=>a+(b.BudgetSpent||0),0);
+    let mlSpent = rawSheetRows.filter(r=>r.Region==='ML').reduce((a,b)=>a+(b.BudgetSpent||0),0);
+    let uaeSpent = rawSheetRows.filter(r=>r.Region==='UAE').reduce((a,b)=>a+(b.BudgetSpent||0),0);
 
     if(barChartInstance) barChartInstance.destroy();
     barChartInstance = new Chart(document.getElementById("budgetBarChart").getContext("2d"), {
@@ -423,6 +559,8 @@
       }
     });
   });
+
+  loadData();
 })();
 </script>
 </body>
