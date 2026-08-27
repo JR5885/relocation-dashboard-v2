@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Relocation Command Center</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com/">
 <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600;700&display=swap" rel="stylesheet">
@@ -15,7 +16,6 @@
     --accent:#C98A3A; --accent-strong:#E7B067; --accent-soft:rgba(201,138,58,0.16); --accent-text-on:#1A1104;
     --green:#3DDC8C; --green-soft:rgba(61,220,140,0.14); --amber:#F2B84B; --amber-soft:rgba(242,184,75,0.16);
     --red:#F2685C; --red-soft:rgba(242,104,92,0.18); --shadow:0 10px 28px rgba(0,0,0,0.4);
-    --tok-c:#5E7284; --tok-s:#8FCB9B; --tok-k:#E7B067; --tok-n:#7FB6D9; --tok-f:#D9A8E0;
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
@@ -42,13 +42,9 @@
   .kpi-value{font-family:"Big Shoulders Display";font-size:32px;font-weight:800;margin-top:4px;line-height:1;}
   .kpi-value small{font-size:15px;font-weight:600;color:var(--text-muted);margin-left:2px;}
   .kpi-foot{font-size:12px;color:var(--text-muted);margin-top:6px;}
-  .kpi-foot.alert{color:var(--red);font-weight:600;}
-  .kpi-tile.anomaly-tile{border-color:var(--red);background:linear-gradient(180deg,var(--red-soft),var(--surface) 70%);}
 
   .progress-shell{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 18px;margin-bottom:26px;box-shadow:var(--shadow);}
   .progress-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;}
-  .progress-top strong{font-size:13px;}
-  .progress-top span{font-size:12px;color:var(--text-muted);}
   .bar-track{height:10px;border-radius:999px;background:var(--border-soft);overflow:hidden;}
   .bar-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--accent),var(--accent-strong));width:82%;}
 
@@ -63,48 +59,24 @@
   .region-filter, .status-filter{display:flex;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:3px;flex-wrap:wrap;}
   .region-filter button, .status-filter button{border:0;background:transparent;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:600;color:var(--text-muted);cursor:pointer;}
   .region-filter button.active, .status-filter button.active{background:var(--accent);color:var(--accent-text-on);}
-  .board-legend{display:flex;gap:14px;font-size:12px;color:var(--text-muted);align-items:center;}
-  .dot{width:8px;height:8px;border-radius:50%;display:inline-block;}
-  .dot.green{background:var(--green);} .dot.amber{background:var(--amber);} .dot.red{background:var(--red);}
 
   .board{display:flex;gap:14px;overflow-x:auto;padding-bottom:10px;align-items:flex-start;}
   .column{background:var(--surface);border:1px solid var(--border);border-radius:12px;min-width:270px;max-width:270px;flex:0 0 auto;}
-  .column-head{padding:12px 14px;border-bottom:1px solid var(--border-soft);display:flex;justify-content:space-between;align-items:center;}
+  .column-head{padding:12px 14px;border-bottom:1px solid var(--border-soft);}
   .column-title{font-size:12.5px;font-weight:700;text-transform:uppercase;}
   .column-count{font-size:11px;color:var(--text-faint);margin-top:2px;}
   .column-body{padding:10px;display:flex;flex-direction:column;gap:10px;min-height:60px;}
   .column-empty{font-size:12px;color:var(--text-faint);text-align:center;padding:18px 6px;border:1px dashed var(--border);border-radius:8px;}
 
-  .card{background:var(--surface-raised);border:1px solid var(--border-soft);border-left:3px solid var(--border);border-radius:9px;padding:11px 12px;box-shadow:var(--shadow);}
-  .card.status-on-track{border-left-color:var(--green);}
-  .card.status-at-risk{border-left-color:var(--amber);}
-  .card.status-overdue{border-left-color:var(--red);}
+  .card{background:var(--surface-raised);border:1px solid var(--border-soft);border-left:3px solid var(--accent);border-radius:9px;padding:11px 12px;box-shadow:var(--shadow);}
   .card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
   .region-pill{font-size:10px;font-weight:700;padding:2px 7px;border-radius:5px;}
   .region-pill.SG{background:var(--green-soft);color:var(--green);}
   .region-pill.ML{background:var(--amber-soft);color:var(--amber);}
   .region-pill.UAE{background:var(--accent-soft);color:var(--accent-strong);}
-  .card-pax{font-size:12px;color:var(--text-muted);font-weight:600;}
   .card-title{font-size:13.5px;font-weight:600;margin-bottom:4px;}
-  .card-vendor{font-size:11.5px;color:var(--text-faint);margin-bottom:8px;}
-  .card-budget-row{display:flex;justify-content:space-between;font-size:11px;color:var(--text-muted);margin-bottom:3px;}
-  .mini-bar-track{height:5px;background:var(--border-soft);border-radius:999px;overflow:hidden;margin-bottom:8px;}
-  .mini-bar-fill{height:100%;border-radius:999px;background:var(--accent);}
-  .mini-bar-fill.over{background:var(--red);}
-  .card-deadline{display:flex;align-items:center;justify-content:space-between;font-size:11.5px;margin-bottom:8px;}
-  .status-chip{font-size:10px;font-weight:700;padding:2px 7px;border-radius:5px;}
-  .status-chip.status-on-track{background:var(--green-soft);color:var(--green);}
-  .status-chip.status-at-risk{background:var(--amber-soft);color:var(--amber);}
-  .status-chip.status-overdue{background:var(--red-soft);color:var(--red);}
 
-  .anomaly-flag{margin-bottom:8px;padding:7px 8px;background:var(--red-soft);border:1px solid var(--red);border-radius:6px;font-size:11px;line-height:1.4;}
-  .anomaly-flag b{color:var(--red);}
-
-  .card-actions{display:flex;gap:6px;}
-  .card-actions button{flex:1;background:var(--surface);border:1px solid var(--border);color:var(--text);padding:5px;border-radius:6px;font-size:11px;font-weight:600;}
-  .card-actions button:hover{background:var(--surface-hover);color:var(--accent-strong);}
-
-  /* Roster Table Styles */
+  /* Roster Table */
   .roster-section{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;box-shadow:var(--shadow);margin-bottom:20px;}
   .roster-table{width:100%;border-collapse:collapse;margin-top:12px;font-size:13px;}
   .roster-table th, .roster-table td{padding:12px 16px;text-align:left;border-bottom:1px solid var(--border-soft);}
@@ -112,45 +84,13 @@
   .search-box{width:100%;max-width:300px;background:var(--surface-raised);border:1px solid var(--border);color:var(--text);padding:8px 12px;border-radius:8px;font-size:13px;margin-bottom:16px;outline:none;}
   .search-box:focus{border-color:var(--accent);}
 
-  /* Competency & Architecture styles */
-  .section-heading{margin-bottom:14px;}
-  .section-heading h2{font-size:22px;font-weight:700;}
-  .section-heading p{color:var(--text-muted);font-size:13.5px;margin-top:4px;}
   .competency-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:34px;}
   .comp-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;box-shadow:var(--shadow);}
-  .comp-card-head{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
-  .comp-icon{width:34px;height:34px;border-radius:8px;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;color:var(--accent-strong);}
   .comp-metric{font-family:"Big Shoulders Display";font-size:28px;font-weight:800;color:var(--accent-strong);margin:6px 0 8px;}
-  .comp-card p{font-size:13px;color:var(--text-muted);margin:0;}
-
-  .flow{display:flex;flex-direction:column;align-items:center;gap:6px;margin-bottom:34px;}
-  .flow-row{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;width:100%;}
-  .flow-node{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 16px;text-align:center;min-width:150px;box-shadow:var(--shadow);}
-  .flow-node .fn-label{font-size:12.5px;font-weight:600;}
-  .flow-node .fn-sub{font-size:10.5px;color:var(--text-faint);margin-top:2px;}
-  .flow-node.engine{border-color:var(--accent);background:linear-gradient(180deg,var(--accent-soft),var(--surface) 75%);}
-  .flow-node.engine .fn-label{color:var(--accent-strong);}
-  .flow-arrow{color:var(--text-faint);font-size:20px;line-height:1;}
-
-  .code-panel{border:1px solid var(--border);border-radius:12px;overflow:hidden;background:var(--surface);box-shadow:var(--shadow);}
-  .code-tabs{display:flex;border-bottom:1px solid var(--border);background:var(--surface-raised);}
-  .code-tabbtn{background:transparent;border:0;padding:10px 16px;font-size:12.5px;font-family:"IBM Plex Mono";color:var(--text-muted);cursor:pointer;}
-  .code-tabbtn.active{color:var(--accent-strong);background:var(--surface);font-weight:600;}
-  .code-body pre{margin:0;padding:18px 20px;font-size:12.5px;line-height:1.65;overflow-x:auto;}
-  .tok-c{color:var(--tok-c);font-style:italic;} .tok-s{color:var(--tok-s);} .tok-k{color:var(--tok-k);} .tok-n{color:var(--tok-n);} .tok-f{color:var(--tok-f);}
-
-  /* Analytics Grid & Heatmap */
-  .analytics-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:20px;}
+  .analytics-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
   @media(max-width:768px){.analytics-grid{grid-template-columns:1fr;}}
   .analytics-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;box-shadow:var(--shadow);display:flex;flex-direction:column;align-items:flex-start;}
-  .analytics-card h3{font-size:16px;font-weight:700;color:var(--text);margin-bottom:2px;}
   .chart-container{position:relative;width:100%;height:260px;margin-top:10px;}
-
-  .heatmap-table{width:100%;border-collapse:collapse;margin-top:12px;font-size:12px;text-align:center;}
-  .heatmap-table th, .heatmap-table td{border:1px solid var(--border-soft);padding:8px;}
-  .heatmap-table th{background:var(--surface-raised);color:var(--text-muted);}
-  .hm-red{background:var(--red-soft);color:var(--red);font-weight:750;}
-  .hm-blue{background:rgba(37,106,191,0.25);color:#86B6EF;font-weight:600;}
 
   .foot-note{margin-top:40px;padding-top:16px;border-top:1px solid var(--border-soft);font-size:12px;color:var(--text-faint);display:flex;justify-content:space-between;}
 </style>
@@ -162,24 +102,28 @@
     <div>
       <p class="brand-eyebrow">GM-Robot · Tech-PMO Command Center</p>
       <h1 class="brand-title">Relocation Blitz — SG · ML · UAE</h1>
-      <p class="brand-sub">122-headcount multi-region relocation, live synchronized telemetry & analytics charts.</p>
+      <p class="brand-sub">Live Synchronized with Google Spreadsheet Data.</p>
     </div>
   </div>
 
-  <div class="kpi-row" id="kpiRow"></div>
+  <div class="kpi-row">
+    <div class="kpi-tile"><div class="kpi-label">Total Headcount</div><div class="kpi-value" id="kpiCount">122<small>pax</small></div><div class="kpi-foot">Loaded from Google Sheets</div></div>
+    <div class="kpi-tile"><div class="kpi-label">Overall Progress</div><div class="kpi-value">82<small>%</small></div><div class="kpi-foot">Weighted average</div></div>
+    <div class="kpi-tile"><div class="kpi-label">Total Budget Spent</div><div class="kpi-value" id="kpiSpent" style="font-size:24px;">Loading...</div><div class="kpi-foot">Live Google Sheets Sync</div></div>
+    <div class="kpi-tile" style="border-color:var(--green);"><div class="kpi-label">Sync Status</div><div class="kpi-value" style="font-size:24px;color:var(--green);">Connected</div><div class="kpi-foot">CSV Auto-sync active</div></div>
+  </div>
 
   <div class="progress-shell">
     <div class="progress-top">
       <strong>Overall relocation progress</strong>
-      <span>82% complete · 122 of 122 accounted for</span>
+      <span>Live Data Synced</span>
     </div>
-    <div class="bar-track"><div class="bar-fill" style="width:82%;"></div></div>
+    <div class="bar-track"><div class="bar-fill"></div></div>
   </div>
 
   <div class="tabbar" role="tablist">
     <button class="tabbtn active" data-tab="board">🗂️ Jira / Kanban Board</button>
     <button class="tabbtn" data-tab="matrix">🏗️ PMO Competency Matrix</button>
-    <button class="tabbtn" data-tab="arch">💻 GM-Robot Architecture</button>
     <button class="tabbtn" data-tab="analytics">📊 Live Analytics</button>
     <button class="tabbtn" data-tab="roster">👥 Roster</button>
   </div>
@@ -188,19 +132,15 @@
   <section class="tabpanel active" id="panel-board">
     <div class="board-controls">
       <div class="region-filter" id="regionFilter">
-        <button data-region="All" class="active">All</button>
-        <button data-region="SG">SG · 30</button>
-        <button data-region="ML">ML · 80</button>
-        <button data-region="UAE">UAE · 12</button>
-      </div>
-      <div class="board-legend">
-        <span><span class="dot green"></span> On track</span>
-        <span><span class="dot amber"></span> At risk</span>
-        <span><span class="dot red"></span> Overdue / anomaly</span>
-        <button onclick="resetData()" style="background:var(--surface);border:1px solid var(--border);color:var(--text-muted);padding:4px 8px;border-radius:6px;font-size:11px;">Reset sample data</button>
+        <button data-region="All" class="active">All Regions</button>
+        <button data-region="SG">SG</button>
+        <button data-region="ML">ML</button>
+        <button data-region="UAE">UAE</button>
       </div>
     </div>
-    <div class="board" id="boardContainer"></div>
+    <div class="board" id="dynamicBoard">
+      <p style="color:var(--text-muted); padding:20px;">正在從 Google 試算表同步資料...</p>
+    </div>
   </section>
 
   <!-- TAB 2: MATRIX -->
@@ -211,124 +151,41 @@
     </div>
     <div class="competency-grid">
       <div class="comp-card">
-        <div class="comp-card-head"><div class="comp-icon">⚡</div><h3>Strategic Execution & Speed</h3></div>
+        <h3>Strategic Execution & Speed</h3>
         <div class="comp-metric">122 → 3 regions, 60 days</div>
-        <p>Full relocation across Singapore, Malaysia and UAE inside a strict 2-month deadline.</p>
+        <p>Full relocation across Singapore, Malaysia and UAE inside a strict deadline.</p>
       </div>
       <div class="comp-card">
-        <div class="comp-card-head"><div class="comp-icon">🛡</div><h3>Compliance & Risk Mitigation</h3></div>
+        <h3>Compliance & Risk Mitigation</h3>
         <div class="comp-metric">100% compliant · 0 penalties</div>
-        <p>Full legal and visa compliance sustained across three jurisdictions with zero penalties.</p>
+        <p>Full legal and visa compliance sustained across three jurisdictions.</p>
       </div>
     </div>
   </section>
 
-  <!-- TAB 3: ARCHITECTURE -->
-  <section class="tabpanel" id="panel-arch">
-    <div class="section-heading">
-      <h2>GM-Robot System Architecture</h2>
-      <p>External intake → automated compliance & budget checks → live reporting and escalation.</p>
-    </div>
-    <div class="flow">
-      <div class="flow-row">
-        <div class="flow-node"><div class="fn-label">HR Systems</div><div class="fn-sub">Roster & org data</div></div>
-        <div class="flow-node"><div class="fn-label">Immigration Lawyers</div><div class="fn-sub">EP / Residence Card filings</div></div>
-        <div class="flow-node"><div class="fn-label">Landlords / Vendors</div><div class="fn-sub">Housing & logistics</div></div>
-        <div class="flow-node"><div class="fn-label">Veremark</div><div class="fn-sub">Background checks</div></div>
-      </div>
-      <div class="flow-arrow down">↓</div>
-      <div class="flow-row">
-        <div class="flow-node engine"><div class="fn-label">Python Automation Engine</div><div class="fn-sub">Compliance check · Budget anomaly detection</div></div>
-      </div>
-      <div class="flow-arrow down">↓</div>
-      <div class="flow-row">
-        <div class="flow-node"><div class="fn-label">Notion Dashboard</div><div class="fn-sub">Live PMO tracker, synced per run</div></div>
-        <div class="flow-node"><div class="fn-label">Slack Escalation</div><div class="fn-sub">#relocation-blitz-alerts</div></div>
-      </div>
-    </div>
-
-    <div class="code-panel">
-      <div class="code-tabs">
-        <button class="code-tabbtn active">compliance_check.py</button>
-      </div>
-      <div class="code-body"><pre><code><span class="tok-k">import</span> pandas <span class="tok-k">as</span> pd
-<span class="tok-k">from</span> datetime <span class="tok-k">import</span> date
-
-<span class="tok-k">def</span> <span class="tok-f">run_compliance_check</span>():
-    <span class="tok-s">"Auto-syncs HR feeds and flags statutory visa breaches."</span>
-    df = pd.<span class="tok-f">read_csv</span>(<span class="tok-s">"feeds/hr_roster.csv"</span>)
-    print(f<span class="tok-s">"Monitored {len(df)} active relocation files successfully."</span>)
-</code></pre></div>
-    </div>
-  </section>
-
-  <!-- TAB 4: LIVE ANALYTICS -->
+  <!-- TAB 3: LIVE ANALYTICS -->
   <section class="tabpanel" id="panel-analytics">
     <div class="section-heading">
       <h2>Live Analytics</h2>
-      <p>Recomputed straight from the Kanban data — edit any card and these update immediately.</p>
+      <p>Recomputed straight from Google Sheets live data.</p>
     </div>
     <div class="analytics-grid">
       <div class="analytics-card">
         <h3>Headcount by Region</h3>
-        <p style="color:var(--text-muted);font-size:12px;margin-bottom:4px;">Share of the 122 total, pie chart.</p>
         <div class="chart-container"><canvas id="headcountPieChart"></canvas></div>
       </div>
       <div class="analytics-card">
-        <h3>Tranche Health Bubble Map</h3>
-        <p style="color:var(--text-muted);font-size:12px;margin-bottom:4px;">x = budget utilized, y = stage completion, size = headcount.</p>
-        <div class="chart-container"><canvas id="trancheBubbleChart"></canvas></div>
-      </div>
-      <div class="analytics-card">
-        <h3>Actual vs Plan Progress</h3>
-        <p style="color:var(--text-muted);font-size:12px;margin-bottom:4px;">Velocity trajectory across blitz schedule.</p>
-        <div class="chart-container"><canvas id="velocityLineChart"></canvas></div>
-      </div>
-      <div class="analytics-card">
-        <h3>Headcount by Stage & Region</h3>
-        <p style="color:var(--text-muted);font-size:12px;margin-bottom:4px;">Distribution across operational pipeline.</p>
-        <div class="chart-container"><canvas id="stageBarChart"></canvas></div>
-      </div>
-      <div class="analytics-card">
-        <h3>Batches by Status</h3>
-        <p style="color:var(--text-muted);font-size:12px;margin-bottom:4px;">Headcount currently on track, at risk, or overdue.</p>
-        <div class="chart-container"><canvas id="statusBarChart"></canvas></div>
-      </div>
-      <div class="analytics-card" style="width:100%;">
-        <h3>Budget Burn Heatmap</h3>
-        <p style="color:var(--text-muted);font-size:12px;margin-bottom:4px;">Spent ÷ allocated per stage × region. Blue = under, red = over.</p>
-        <table class="heatmap-table" id="heatmapTable">
-          <thead>
-            <tr><th>Stage</th><th>SG</th><th>ML</th><th>UAE</th></tr>
-          </thead>
-          <tbody id="heatmapBody"></tbody>
-        </table>
+        <h3>Budget Allocation vs Spent</h3>
+        <div class="chart-container"><canvas id="budgetBarChart"></canvas></div>
       </div>
     </div>
   </section>
 
-  <!-- TAB 5: ROSTER -->
+  <!-- TAB 4: ROSTER -->
   <section class="tabpanel" id="panel-roster">
     <div class="section-heading">
       <h2>Relocation Roster</h2>
-      <p>All 122 people, grouped by status. Source: team's RELOCATION PROJECT tracking sheet.</p>
-    </div>
-    <div class="board-controls" style="margin-top:12px;">
-      <div class="region-filter" id="rosterRegionFilter">
-        <button data-reg="All" class="active">All regions</button>
-        <button data-reg="SG">SG · 30</button>
-        <button data-reg="ML">ML · 80</button>
-        <button data-reg="UAE">UAE · 12</button>
-      </div>
-      <div class="status-filter" id="rosterStatusFilter">
-        <button data-stat="All" class="active">All statuses</button>
-        <button data-stat="Entity Card Setup">Entity Card Setup</button>
-        <button data-stat="Veremark Pending">Veremark Pending</button>
-        <button data-stat="Veremark Completed">Veremark Completed</button>
-        <button data-stat="EP / RC Submission">EP Submission</button>
-        <button data-stat="EP / RC Approval">EP Approval</button>
-        <button data-stat="Entry">Entry</button>
-      </div>
+      <p>Live synchronized from Google Spreadsheet "RELOCATION PROJECT".</p>
     </div>
     <input type="text" class="search-box" id="rosterSearch" placeholder="Search name or ID...">
     <div id="rosterContent"></div>
@@ -336,142 +193,73 @@
 
   <div class="foot-note">
     <span>GM-Robot PMO 2.0 · Relocation Blitz Command Center</span>
-    <span id="asOfLine">As of August 27, 2026</span>
+    <span id="syncTime">Live Synced</span>
   </div>
 </div>
 
 <script>
 (function(){
-  const STAGE_ORDER = ["Entity Card Setup", "Veremark Pending", "Veremark Completed", "EP / RC Submission", "EP / RC Approval", "Entry"];
-  const STAGE_WEIGHT = { "Entity Card Setup": 10, "Veremark Pending": 25, "Veremark Completed": 45, "EP / RC Submission": 65, "EP / RC Approval": 85, "Entry": 100 };
+  const gsheetCsvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQUem3z16ko71Gyz_80gTFiw7C_O9UkoBcJP8nAWabx1ikg23ujAUlEwyVTr4s-rguZ1DKbuDVkZB8c/pub?output=csv";
+  let pieChartInstance = null;
+  let barChartInstance = null;
 
-  const DEFAULT_CARDS = [
-    {id: 1, region:"UAE", stage:"Entity Card Setup", count:1, allocated:9000, spent:9600, deadline:"2026-08-20", vendor:"Gulf Nexus", status:"overdue", anomaly:true, note:"Free-zone trade-license renewal delayed 6 days."},
-    {id: 2, region:"SG", stage:"Veremark Pending", count:1, allocated:700, spent:300, deadline:"2026-08-27", vendor:"Veremark APAC", status:"at-risk", anomaly:false},
-    {id: 3, region:"SG", stage:"Veremark Completed", count:2, allocated:1500, spent:1450, deadline:"2026-08-25", vendor:"Veremark APAC", status:"overdue", anomaly:true, note:"Reference-check discrepancy on prior employment."},
-    {id: 4, region:"SG", stage:"EP / RC Submission", count:4, allocated:5200, spent:4100, deadline:"2026-08-29", vendor:"Rikvin Immigration", status:"at-risk", anomaly:false},
-    {id: 5, region:"SG", stage:"EP / RC Approval", count:5, allocated:7000, spent:6650, deadline:"2026-08-30", vendor:"MOM", status:"on-track", anomaly:false},
-    {id: 6, region:"SG", stage:"Entry", count:18, allocated:27000, spent:27000, deadline:"2026-08-31", vendor:"Internal Mobility", status:"on-track", anomaly:false},
-    {id: 7, region:"ML", stage:"Veremark Pending", count:5, allocated:3500, spent:1200, deadline:"2026-08-28", vendor:"Veremark APAC", status:"at-risk", anomaly:false},
-    {id: 8, region:"ML", stage:"Veremark Completed", count:8, allocated:6800, spent:6500, deadline:"2026-08-29", vendor:"Veremark APAC", status:"on-track", anomaly:false},
-    {id: 9, region:"ML", stage:"EP / RC Submission", count:12, allocated:15600, spent:20280, deadline:"2026-08-28", vendor:"AsiaEmploy", status:"at-risk", anomaly:true, note:"Agency fee variance vs. contracted rate."},
-    {id: 10, region:"ML", stage:"EP / RC Approval", count:15, allocated:21000, spent:19950, deadline:"2026-08-30", vendor:"Malaysia Immigration", status:"on-track", anomaly:false},
-    {id: 11, region:"ML", stage:"Entry", count:40, allocated:62000, spent:62000, deadline:"2026-08-31", vendor:"Internal Mobility", status:"on-track", anomaly:false},
-    {id: 12, region:"UAE", stage:"Veremark Pending", count:1, allocated:900, spent:300, deadline:"2026-08-29", vendor:"Veremark MENA", status:"on-track", anomaly:false},
-    {id: 13, region:"UAE", stage:"Veremark Completed", count:1, allocated:950, spent:900, deadline:"2026-08-29", vendor:"Veremark MENA", status:"on-track", anomaly:false},
-    {id: 14, region:"UAE", stage:"EP / RC Submission", count:2, allocated:3400, spent:2700, deadline:"2026-08-30", vendor:"Gulf Nexus", status:"on-track", anomaly:false},
-    {id: 15, region:"UAE", stage:"EP / RC Approval", count:2, allocated:3800, spent:3550, deadline:"2026-08-31", vendor:"GDRFA Dubai", status:"on-track", anomaly:false},
-    {id: 16, region:"UAE", stage:"Entry", count:5, allocated:12500, spent:12500, deadline:"2026-08-31", vendor:"Internal Mobility", status:"on-track", anomaly:false}
-  ];
+  Papa.parse(gsheetCsvUrl, {
+    download: true,
+    header: true,
+    complete: function(results) {
+      const rows = results.data.filter(r => r.EmployeeID);
+      window.sheetData = rows;
 
-  // 模擬 Roster 名單資料庫
-  let rosterPeople = [
-    {id:"UAE-001", name:"Omar Al-Farsi", region:"UAE", stage:"Entity Card Setup", budget:"$7,500 / $8,000 (94%)", arrival:"Sep 15"},
-    {id:"UAE-007", name:"Rashid Al-Maktoum", region:"UAE", stage:"Entity Card Setup", budget:"$7,800 / $8,000 (98%)", arrival:"Sep 22"},
-    {id:"SG-006", name:"Wong Kok Wai", region:"SG", stage:"Veremark Pending", budget:"$500 / $5,000 (10%)", arrival:"Sep 30"},
-    {id:"SG-011", name:"Lim Mei Ling", region:"SG", stage:"Veremark Pending", budget:"$800 / $5,000 (16%)", arrival:"Oct 1"},
-    {id:"SG-016", name:"Desmond Chua", region:"SG", stage:"Veremark Pending", budget:"$1,100 / $5,000 (22%)", arrival:"Oct 5"},
-    {id:"ML-002", name:"Ahmad Zaki", region:"ML", stage:"Veremark Completed", budget:"$6,500 / $6,800 (96%)", arrival:"Sep 10"},
-    {id:"ML-015", name:"Siti Nurhaliza", region:"ML", stage:"EP / RC Submission", budget:"$19,950 / $21,000 (95%)", arrival:"Sep 18"}
-  ];
+      let totalSpent = 0;
+      let totalAllocated = 0;
+      rows.forEach(r => {
+        totalSpent += parseFloat(r.BudgetSpent || 0);
+        totalAllocated += parseFloat(r.BudgetAllocated || 0);
+      });
 
-  let cards = JSON.parse(localStorage.getItem("pmo_cards")) || DEFAULT_CARDS;
-  let currentFilter = "All";
-  let rosterRegFilter = "All";
-  let rosterStatFilter = "All";
-  let chartInstances = {};
+      document.getElementById("kpiCount").innerHTML = rows.length + "<small>pax</small>";
+      document.getElementById("kpiSpent").innerText = "$" + Math.round(totalSpent).toLocaleString() + " / $" + Math.round(totalAllocated).toLocaleString();
+      document.getElementById("syncTime").innerText = "Last synced: " + new Date().toLocaleTimeString();
 
-  function saveCards(){
-    localStorage.setItem("pmo_cards", JSON.stringify(cards));
-  }
-
-  window.resetData = function(){
-    cards = JSON.parse(JSON.stringify(DEFAULT_CARDS));
-    saveCards();
-    renderAll();
-  }
-
-  window.advanceStage = function(id){
-    const card = cards.find(c => c.id === id);
-    if(!card) return;
-    const idx = STAGE_ORDER.indexOf(card.stage);
-    if(idx < STAGE_ORDER.length - 1){
-      card.stage = STAGE_ORDER[idx + 1];
-      saveCards();
-      renderAll();
+      renderBoard("All");
+      renderRoster();
+      renderCharts(rows);
     }
-  }
+  });
 
-  window.editCard = function(id){
-    const card = cards.find(c => c.id === id);
-    if(!card) return;
-    const newSpent = prompt("修改已花費金額 (USD):", card.spent);
-    if(newSpent !== null && !isNaN(newSpent)){
-      card.spent = parseFloat(newSpent);
-      card.status = card.spent > card.allocated ? "overdue" : "on-track";
-      saveCards();
-      renderAll();
+  document.getElementById("regionFilter").addEventListener("click", function(e){
+    if(e.target.tagName === "BUTTON"){
+      document.querySelectorAll("#regionFilter button").forEach(b => b.classList.remove("active"));
+      e.target.classList.add("active");
+      renderBoard(e.target.dataset.region);
     }
-  }
+  });
 
-  function fmtUSD(n){ return "$" + Math.round(n).toLocaleString("en-US"); }
+  function renderBoard(regionFilter){
+    const board = document.getElementById("dynamicBoard");
+    const rows = window.sheetData || [];
+    const statuses = [...new Set(rows.map(r => r.Status))];
 
-  function renderKPIs(){
-    let allocated = 0, spent = 0, anomalies = 0;
-    cards.forEach(c => {
-      allocated += c.allocated;
-      spent += c.spent;
-      if(c.anomaly) anomalies++;
-    });
-    const util = Math.round(spent / allocated * 100);
-
-    const row = document.getElementById("kpiRow");
-    row.innerHTML = `
-      <div class="kpi-tile"><div class="kpi-label">Total Headcount</div><div class="kpi-value">122<small>pax</small></div><div class="kpi-foot">SG 30 · ML 80 · UAE 12</div></div>
-      <div class="kpi-tile"><div class="kpi-label">Overall Progress</div><div class="kpi-value">82<small>%</small></div><div class="kpi-foot">Weighted across pipeline stages</div></div>
-      <div class="kpi-tile"><div class="kpi-label">Budget Utilization</div><div class="kpi-value">${util}<small>%</small></div><div class="kpi-foot">${fmtUSD(spent)} of ${fmtUSD(allocated)}</div></div>
-      <div class="kpi-tile anomaly-tile"><div class="kpi-label">Active Anomalies</div><div class="kpi-value">${anomalies}</div><div class="kpi-foot alert">Compliance + budget flags open</div></div>
-    `;
-  }
-
-  function renderBoard(){
-    const container = document.getElementById("boardContainer");
-    const activeStages = STAGE_ORDER.filter(s => currentFilter === "All" || s !== "Entity Card Setup" || currentFilter === "UAE");
-
-    container.innerHTML = activeStages.map(stage => {
-      const stageCards = cards.filter(c => c.stage === stage && (currentFilter === "All" || c.region === currentFilter));
-      const totalPax = stageCards.reduce((sum, c) => sum + c.count, 0);
-
-      const cardsHtml = stageCards.length ? stageCards.map(c => {
-        const pct = Math.round(c.spent / c.allocated * 100);
-        const isOver = c.spent > c.allocated;
-        return `
-          <div class="card status-${c.status}">
-            <div class="card-top">
-              <span class="region-pill ${c.region}">${c.region}</span>
-              <span class="card-pax">${c.count} pax</span>
-            </div>
-            <div class="card-title">${c.stage}</div>
-            <div class="card-vendor">${c.vendor}</div>
-            <div class="card-budget-row"><span>${fmtUSD(c.spent)} / ${fmtUSD(c.allocated)}</span><span>${pct}%</span></div>
-            <div class="mini-bar-track"><div class="mini-bar-fill ${isOver?'over':''}" style="width:${Math.min(pct,100)}%"></div></div>
-            <div class="card-deadline">
-              <span>Target: ${c.deadline}</span>
-              <span class="status-chip status-${c.status}">${c.status.toUpperCase()}</span>
-            </div>
-            ${c.anomaly ? `<div class="anomaly-flag"><b>⚠ Anomaly —</b> ${c.note}</div>` : ''}
-            <div class="card-actions">
-              <button onclick="editCard(${c.id})">Edit</button>
-              <button onclick="advanceStage(${c.id})">Advance ▸</button>
-            </div>
+    board.innerHTML = statuses.map(status => {
+      const filtered = rows.filter(r => (regionFilter === "All" || r.Region === regionFilter) && r.Status === status);
+      
+      const cardsHtml = filtered.length ? filtered.map(r => `
+        <div class="card">
+          <div class="card-top">
+            <span class="region-pill ${r.Region}">${r.Region}</span>
+            <span style="font-size:11px;color:var(--text-muted);">${r.EmployeeID}</span>
           </div>
-        `;
-      }).join('') : '<div class="column-empty">No active batches</div>';
+          <div class="card-title">${r.EmployeeName}</div>
+          <div class="card-vendor">Target: ${r.TargetArrivalDate || 'N/A'}</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">$${r.BudgetSpent} / $${r.BudgetAllocated}</div>
+        </div>
+      `).join('') : '<div class="column-empty">No records</div>';
 
       return `
         <div class="column">
           <div class="column-head">
-            <div><div class="column-title">${stage}</div><div class="column-count">${totalPax} pax · ${stageCards.length} batch</div></div>
+            <div class="column-title">${status}</div>
+            <div class="column-count">${filtered.length} pax</div>
           </div>
           <div class="column-body">${cardsHtml}</div>
         </div>
@@ -481,176 +269,70 @@
 
   function renderRoster(){
     const container = document.getElementById("rosterContent");
-    const searchQuery = document.getElementById("rosterSearch").value.toLowerCase();
+    const rows = window.sheetData || [];
+    const query = document.getElementById("rosterSearch").value.toLowerCase();
 
-    let filtered = rosterPeople.filter(p => {
-      let matchReg = (rosterRegFilter === "All" || p.region === rosterRegFilter);
-      let matchStat = (rosterStatFilter === "All" || p.stage === rosterStatFilter);
-      let matchSearch = p.name.toLowerCase().includes(searchQuery) || p.id.toLowerCase().includes(searchQuery);
-      return matchReg && matchStat && matchSearch;
+    const filtered = rows.filter(r => 
+      r.EmployeeName.toLowerCase().includes(query) || r.EmployeeID.toLowerCase().includes(query)
+    );
+
+    let html = `
+      <div class="roster-section">
+        <table class="roster-table">
+          <thead>
+            <tr><th>ID</th><th>Name</th><th>Region</th><th>Status</th><th>Budget Spent</th><th>Target Arrival</th></tr>
+          </thead>
+          <tbody>
+    `;
+
+    filtered.forEach(p => {
+      html += `
+        <tr>
+          <td><strong>${p.EmployeeID}</strong></td>
+          <td>${p.EmployeeName}</td>
+          <td><span class="region-pill ${p.Region}">${p.Region}</span></td>
+          <td>${p.Status}</td>
+          <td>$${p.BudgetSpent} / $${p.BudgetAllocated}</td>
+          <td>${p.TargetArrivalDate}</td>
+        </tr>
+      `;
     });
 
-    let stagesToGroup = rosterStatFilter === "All" ? STAGE_ORDER : [rosterStatFilter];
-
-    container.innerHTML = stagesToGroup.map(stage => {
-      let groupPeople = filtered.filter(p => p.stage === stage);
-      if(groupPeople.length === 0) return '';
-
-      let rows = groupPeople.map(p => `
-        <tr>
-          <td><strong>${p.id}</strong></td>
-          <td>${p.name}</td>
-          <td><span class="region-pill ${p.region}">${p.region}</span></td>
-          <td><div style="background:var(--border-soft);border-radius:99px;width:100px;height:6px;overflow:hidden;"><div style="background:var(--accent);width:40%;height:100%;"></div></div></td>
-          <td>${p.budget}</td>
-          <td>${p.arrival}</td>
-        </tr>
-      `).join('');
-
-      return `
-        <div class="roster-section">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-            <h3 style="font-size:16px;font-weight:700;">${stage}</h3>
-            <span style="font-size:12px;color:var(--text-muted);">${groupPeople.length} people</span>
-          </div>
-          <table class="roster-table">
-            <thead>
-              <tr><th>ID</th><th>Name</th><th>Region</th><th>Completion</th><th>Budget</th><th>Target Arrival</th></tr>
-            </thead>
-            <tbody>${rows}</tbody>
-          </table>
-        </div>
-      `;
-    }).join('') || '<p style="color:var(--text-muted);text-align:center;padding:20px;">No matching records found.</p>';
+    html += `</tbody></table></div>`;
+    container.innerHTML = html;
   }
 
-  function renderCharts(){
-    Object.values(chartInstances).forEach(chart => chart.destroy());
-    chartInstances = {};
+  document.getElementById("rosterSearch").addEventListener("input", renderRoster);
 
-    chartInstances.pie = new Chart(document.getElementById("headcountPieChart").getContext("2d"), {
+  function renderCharts(rows){
+    let sg = rows.filter(r => r.Region === 'SG').length;
+    let ml = rows.filter(r => r.Region === 'ML').length;
+    let uae = rows.filter(r => r.Region === 'UAE').length;
+
+    if(pieChartInstance) pieChartInstance.destroy();
+    pieChartInstance = new Chart(document.getElementById("headcountPieChart").getContext("2d"), {
       type: 'doughnut',
       data: {
         labels: ['SG', 'ML', 'UAE'],
-        datasets: [{ data: [25, 66, 10], backgroundColor: ['#256ABF', '#C25124', '#009300'], borderWidth: 0 }]
+        datasets: [{ data: [sg, ml, uae], backgroundColor: ['#3DDC8C', '#F2B84B', '#C98A3A'], borderWidth: 0 }]
       },
-      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#93A7B8', boxWidth: 10 } } } }
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#93A7B8' } } } }
     });
 
-    let bubblePoints = cards.map(c => ({
-      x: Math.round((c.spent/c.allocated)*100),
-      y: STAGE_WEIGHT[c.stage]||50,
-      r: Math.max(5, c.count * 1.2),
-      region: c.region
-    }));
-    chartInstances.bubble = new Chart(document.getElementById("trancheBubbleChart").getContext("2d"), {
-      type: 'bubble',
-      data: {
-        datasets: [{
-          data: bubblePoints,
-          backgroundColor: bubblePoints.map(p => p.region === 'SG' ? 'rgba(37,106,191,0.6)' : p.region === 'ML' ? 'rgba(194,81,36,0.6)' : 'rgba(0,147,0,0.6)'),
-          borderColor: bubblePoints.map(p => p.region === 'SG' ? '#256ABF' : p.region === 'ML' ? '#C25124' : '#009300'),
-          borderWidth: 1
-        }]
-      },
-      options: {
-        responsive: true, maintainAspectRatio: false,
-        scales: {
-          x: { title: { display: true, text: 'Budget utilized →', color: '#93A7B8', font:{size:11} }, grid: { color: '#2B4152' }, ticks: { color: '#93A7B8' }, min: 0, max: 150 },
-          y: { title: { display: true, text: 'Stage completion', color: '#93A7B8', font:{size:11} }, grid: { color: '#2B4152' }, ticks: { color: '#93A7B8' }, min: 0, max: 100 }
-        },
-        plugins: { legend: { display: false } }
-      }
-    });
+    let sgSpent = rows.filter(r=>r.Region==='SG').reduce((a,b)=>a+parseFloat(b.BudgetSpent||0),0);
+    let mlSpent = rows.filter(r=>r.Region==='ML').reduce((a,b)=>a+parseFloat(b.BudgetSpent||0),0);
+    let uaeSpent = rows.filter(r=>r.Region==='UAE').reduce((a,b)=>a+parseFloat(b.BudgetSpent||0),0);
 
-    chartInstances.line = new Chart(document.getElementById("velocityLineChart").getContext("2d"), {
-      type: 'line',
-      data: {
-        labels: ['Wk 0', 'Wk 2', 'Wk 4', 'Wk 6', 'Wk 8'],
-        datasets: [
-          { label: 'Actual', data: [0, 25, 45, 78, 82], borderColor: '#EDA100', borderWidth: 2, tension: 0.1 },
-          { label: 'Plan (linear)', data: [0, 25, 50, 75, 100], borderColor: '#8A8F97', borderDash: [5,5], borderWidth: 1 }
-        ]
-      },
-      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#93A7B8', boxWidth: 10 } } }, scales: { x: { grid: { color: '#2B4152' }, ticks: { color: '#93A7B8' } }, y: { grid: { color: '#2B4152' }, ticks: { color: '#93A7B8' }, min:0, max:100 } } }
-    });
-
-    let sgStages = STAGE_ORDER.map(s => cards.filter(c => c.stage === s && c.region === "SG").reduce((a,b)=>a+b.count,0));
-    let mlStages = STAGE_ORDER.map(s => cards.filter(c => c.stage === s && c.region === "ML").reduce((a,b)=>a+b.count,0));
-    let uaeStages = STAGE_ORDER.map(s => cards.filter(c => c.stage === s && c.region === "UAE").reduce((a,b)=>a+b.count,0));
-
-    chartInstances.bar = new Chart(document.getElementById("stageBarChart").getContext("2d"), {
+    if(barChartInstance) barChartInstance.destroy();
+    barChartInstance = new Chart(document.getElementById("budgetBarChart").getContext("2d"), {
       type: 'bar',
       data: {
-        labels: STAGE_ORDER,
-        datasets: [
-          { label: 'SG', data: sgStages, backgroundColor: '#256ABF' },
-          { label: 'ML', data: mlStages, backgroundColor: '#C25124' },
-          { label: 'UAE', data: uaeStages, backgroundColor: '#009300' }
-        ]
+        labels: ['SG', 'ML', 'UAE'],
+        datasets: [{ label: 'Spent (USD)', data: [sgSpent, mlSpent, uaeSpent], backgroundColor: ['#256ABF', '#C25124', '#009300'] }]
       },
-      options: { responsive: true, maintainAspectRatio: false, scales: { x: { stacked: true, grid: { color: '#2B4152' }, ticks: { color: '#93A7B8', font:{size:9} } }, y: { stacked: true, grid: { color: '#2B4152' }, ticks: { color: '#93A7B8' } } }, plugins: { legend: { position: 'bottom', labels: { color: '#93A7B8', boxWidth: 10 } } } }
+      options: { responsive: true, maintainAspectRatio: false, scales: { x: { ticks: { color: '#93A7B8' } }, y: { ticks: { color: '#93A7B8' } } }, plugins: { legend: { display: false } } }
     });
-
-    chartInstances.statusBar = new Chart(document.getElementById("statusBarChart").getContext("2d"), {
-      type: 'bar',
-      data: {
-        labels: ['On Track', 'At Risk', 'Overdue'],
-        datasets: [{ data: [97, 22, 3], backgroundColor: ['#3DDC8C', '#F2B84B', '#F2685C'] }]
-      },
-      options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, scales: { x: { grid: { color: '#2B4152' }, ticks: { color: '#93A7B8' } }, y: { grid: { display: false }, ticks: { color: '#93A7B8', font:{weight:'bold'} } } }, plugins: { legend: { display: false } } }
-    });
-
-    const heatmapBody = document.getElementById("heatmapBody");
-    heatmapBody.innerHTML = STAGE_ORDER.map(stage => {
-      let regions = ['SG', 'ML', 'UAE'];
-      let tds = regions.map(reg => {
-        let match = cards.find(c => c.stage === stage && c.region === reg);
-        if(stage === 'Entity Card Setup' && reg !== 'UAE') return `<td>—</td>`;
-        if(!match) return `<td>—</td>`;
-        let pct = Math.round((match.spent / match.allocated) * 100);
-        let cls = pct > 100 ? 'hm-red' : 'hm-blue';
-        return `<td class="${cls}">${pct}%</td>`;
-      }).join('');
-      return `<tr><td style="text-align:left;font-weight:600;color:var(--text-muted);">${stage}</td>${tds}</tr>`;
-    }).join('');
   }
-
-  function renderAll(){
-    renderKPIs();
-    renderBoard();
-    renderRoster();
-    renderCharts();
-  }
-
-  document.getElementById("regionFilter").addEventListener("click", function(e){
-    if(e.target.tagName === "BUTTON"){
-      document.querySelectorAll("#regionFilter button").forEach(b => b.classList.remove("active"));
-      e.target.classList.add("active");
-      currentFilter = e.target.dataset.region;
-      renderBoard();
-    }
-  });
-
-  document.getElementById("rosterRegionFilter").addEventListener("click", function(e){
-    if(e.target.tagName === "BUTTON"){
-      document.querySelectorAll("#rosterRegionFilter button").forEach(b => b.classList.remove("active"));
-      e.target.classList.add("active");
-      rosterRegFilter = e.target.dataset.reg;
-      renderRoster();
-    }
-  });
-
-  document.getElementById("rosterStatusFilter").addEventListener("click", function(e){
-    if(e.target.tagName === "BUTTON"){
-      document.querySelectorAll("#rosterStatusFilter button").forEach(b => b.classList.remove("active"));
-      e.target.classList.add("active");
-      rosterStatFilter = e.target.dataset.stat;
-      renderRoster();
-    }
-  });
-
-  document.getElementById("rosterSearch").addEventListener("input", renderRoster);
 
   document.querySelectorAll(".tabbtn").forEach(btn => {
     btn.addEventListener("click", function(){
@@ -659,12 +341,12 @@
       btn.classList.add("active");
       document.getElementById("panel-" + btn.dataset.tab).classList.add("active");
       if(btn.dataset.tab === "analytics") {
-        setTimeout(renderCharts, 50);
+        setTimeout(() => {
+          if(window.sheetData) renderCharts(window.sheetData);
+        }, 50);
       }
     });
   });
-
-  renderAll();
 })();
 </script>
 </body>
