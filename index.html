@@ -60,9 +60,9 @@
   .tabpanel.active{display:block;}
 
   .board-controls{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:16px;}
-  .region-filter{display:flex;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:3px;}
-  .region-filter button{border:0;background:transparent;padding:7px 14px;border-radius:6px;font-size:13px;font-weight:600;color:var(--text-muted);cursor:pointer;}
-  .region-filter button.active{background:var(--accent);color:var(--accent-text-on);}
+  .region-filter, .status-filter{display:flex;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:3px;flex-wrap:wrap;}
+  .region-filter button, .status-filter button{border:0;background:transparent;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:600;color:var(--text-muted);cursor:pointer;}
+  .region-filter button.active, .status-filter button.active{background:var(--accent);color:var(--accent-text-on);}
   .board-legend{display:flex;gap:14px;font-size:12px;color:var(--text-muted);align-items:center;}
   .dot{width:8px;height:8px;border-radius:50%;display:inline-block;}
   .dot.green{background:var(--green);} .dot.amber{background:var(--amber);} .dot.red{background:var(--red);}
@@ -103,6 +103,14 @@
   .card-actions{display:flex;gap:6px;}
   .card-actions button{flex:1;background:var(--surface);border:1px solid var(--border);color:var(--text);padding:5px;border-radius:6px;font-size:11px;font-weight:600;}
   .card-actions button:hover{background:var(--surface-hover);color:var(--accent-strong);}
+
+  /* Roster Table Styles */
+  .roster-section{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;box-shadow:var(--shadow);margin-bottom:20px;}
+  .roster-table{width:100%;border-collapse:collapse;margin-top:12px;font-size:13px;}
+  .roster-table th, .roster-table td{padding:12px 16px;text-align:left;border-bottom:1px solid var(--border-soft);}
+  .roster-table th{background:var(--surface-raised);color:var(--text-muted);font-size:11px;text-transform:uppercase;letter-spacing:0.05em;}
+  .search-box{width:100%;max-width:300px;background:var(--surface-raised);border:1px solid var(--border);color:var(--text);padding:8px 12px;border-radius:8px;font-size:13px;margin-bottom:16px;outline:none;}
+  .search-box:focus{border-color:var(--accent);}
 
   /* Competency & Architecture styles */
   .section-heading{margin-bottom:14px;}
@@ -173,6 +181,7 @@
     <button class="tabbtn" data-tab="matrix">🏗️ PMO Competency Matrix</button>
     <button class="tabbtn" data-tab="arch">💻 GM-Robot Architecture</button>
     <button class="tabbtn" data-tab="analytics">📊 Live Analytics</button>
+    <button class="tabbtn" data-tab="roster">👥 Roster</button>
   </div>
 
   <!-- TAB 1: KANBAN -->
@@ -298,6 +307,33 @@
     </div>
   </section>
 
+  <!-- TAB 5: ROSTER -->
+  <section class="tabpanel" id="panel-roster">
+    <div class="section-heading">
+      <h2>Relocation Roster</h2>
+      <p>All 122 people, grouped by status. Source: team's RELOCATION PROJECT tracking sheet.</p>
+    </div>
+    <div class="board-controls" style="margin-top:12px;">
+      <div class="region-filter" id="rosterRegionFilter">
+        <button data-reg="All" class="active">All regions</button>
+        <button data-reg="SG">SG · 30</button>
+        <button data-reg="ML">ML · 80</button>
+        <button data-reg="UAE">UAE · 12</button>
+      </div>
+      <div class="status-filter" id="rosterStatusFilter">
+        <button data-stat="All" class="active">All statuses</button>
+        <button data-stat="Entity Card Setup">Entity Card Setup</button>
+        <button data-stat="Veremark Pending">Veremark Pending</button>
+        <button data-stat="Veremark Completed">Veremark Completed</button>
+        <button data-stat="EP / RC Submission">EP Submission</button>
+        <button data-stat="EP / RC Approval">EP Approval</button>
+        <button data-stat="Entry">Entry</button>
+      </div>
+    </div>
+    <input type="text" class="search-box" id="rosterSearch" placeholder="Search name or ID...">
+    <div id="rosterContent"></div>
+  </section>
+
   <div class="foot-note">
     <span>GM-Robot PMO 2.0 · Relocation Blitz Command Center</span>
     <span id="asOfLine">As of August 27, 2026</span>
@@ -328,8 +364,21 @@
     {id: 16, region:"UAE", stage:"Entry", count:5, allocated:12500, spent:12500, deadline:"2026-08-31", vendor:"Internal Mobility", status:"on-track", anomaly:false}
   ];
 
+  // 模擬 Roster 名單資料庫
+  let rosterPeople = [
+    {id:"UAE-001", name:"Omar Al-Farsi", region:"UAE", stage:"Entity Card Setup", budget:"$7,500 / $8,000 (94%)", arrival:"Sep 15"},
+    {id:"UAE-007", name:"Rashid Al-Maktoum", region:"UAE", stage:"Entity Card Setup", budget:"$7,800 / $8,000 (98%)", arrival:"Sep 22"},
+    {id:"SG-006", name:"Wong Kok Wai", region:"SG", stage:"Veremark Pending", budget:"$500 / $5,000 (10%)", arrival:"Sep 30"},
+    {id:"SG-011", name:"Lim Mei Ling", region:"SG", stage:"Veremark Pending", budget:"$800 / $5,000 (16%)", arrival:"Oct 1"},
+    {id:"SG-016", name:"Desmond Chua", region:"SG", stage:"Veremark Pending", budget:"$1,100 / $5,000 (22%)", arrival:"Oct 5"},
+    {id:"ML-002", name:"Ahmad Zaki", region:"ML", stage:"Veremark Completed", budget:"$6,500 / $6,800 (96%)", arrival:"Sep 10"},
+    {id:"ML-015", name:"Siti Nurhaliza", region:"ML", stage:"EP / RC Submission", budget:"$19,950 / $21,000 (95%)", arrival:"Sep 18"}
+  ];
+
   let cards = JSON.parse(localStorage.getItem("pmo_cards")) || DEFAULT_CARDS;
   let currentFilter = "All";
+  let rosterRegFilter = "All";
+  let rosterStatFilter = "All";
   let chartInstances = {};
 
   function saveCards(){
@@ -430,11 +479,55 @@
     }).join('');
   }
 
+  function renderRoster(){
+    const container = document.getElementById("rosterContent");
+    const searchQuery = document.getElementById("rosterSearch").value.toLowerCase();
+
+    let filtered = rosterPeople.filter(p => {
+      let matchReg = (rosterRegFilter === "All" || p.region === rosterRegFilter);
+      let matchStat = (rosterStatFilter === "All" || p.stage === rosterStatFilter);
+      let matchSearch = p.name.toLowerCase().includes(searchQuery) || p.id.toLowerCase().includes(searchQuery);
+      return matchReg && matchStat && matchSearch;
+    });
+
+    let stagesToGroup = rosterStatFilter === "All" ? STAGE_ORDER : [rosterStatFilter];
+
+    container.innerHTML = stagesToGroup.map(stage => {
+      let groupPeople = filtered.filter(p => p.stage === stage);
+      if(groupPeople.length === 0) return '';
+
+      let rows = groupPeople.map(p => `
+        <tr>
+          <td><strong>${p.id}</strong></td>
+          <td>${p.name}</td>
+          <td><span class="region-pill ${p.region}">${p.region}</span></td>
+          <td><div style="background:var(--border-soft);border-radius:99px;width:100px;height:6px;overflow:hidden;"><div style="background:var(--accent);width:40%;height:100%;"></div></div></td>
+          <td>${p.budget}</td>
+          <td>${p.arrival}</td>
+        </tr>
+      `).join('');
+
+      return `
+        <div class="roster-section">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <h3 style="font-size:16px;font-weight:700;">${stage}</h3>
+            <span style="font-size:12px;color:var(--text-muted);">${groupPeople.length} people</span>
+          </div>
+          <table class="roster-table">
+            <thead>
+              <tr><th>ID</th><th>Name</th><th>Region</th><th>Completion</th><th>Budget</th><th>Target Arrival</th></tr>
+            </thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>
+      `;
+    }).join('') || '<p style="color:var(--text-muted);text-align:center;padding:20px;">No matching records found.</p>';
+  }
+
   function renderCharts(){
     Object.values(chartInstances).forEach(chart => chart.destroy());
     chartInstances = {};
 
-    // 1. Pie Chart
     chartInstances.pie = new Chart(document.getElementById("headcountPieChart").getContext("2d"), {
       type: 'doughnut',
       data: {
@@ -444,7 +537,6 @@
       options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#93A7B8', boxWidth: 10 } } } }
     });
 
-    // 2. Bubble Map
     let bubblePoints = cards.map(c => ({
       x: Math.round((c.spent/c.allocated)*100),
       y: STAGE_WEIGHT[c.stage]||50,
@@ -471,7 +563,6 @@
       }
     });
 
-    // 3. Velocity Line Chart
     chartInstances.line = new Chart(document.getElementById("velocityLineChart").getContext("2d"), {
       type: 'line',
       data: {
@@ -484,7 +575,6 @@
       options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#93A7B8', boxWidth: 10 } } }, scales: { x: { grid: { color: '#2B4152' }, ticks: { color: '#93A7B8' } }, y: { grid: { color: '#2B4152' }, ticks: { color: '#93A7B8' }, min:0, max:100 } } }
     });
 
-    // 4. Stage Stacked Bar
     let sgStages = STAGE_ORDER.map(s => cards.filter(c => c.stage === s && c.region === "SG").reduce((a,b)=>a+b.count,0));
     let mlStages = STAGE_ORDER.map(s => cards.filter(c => c.stage === s && c.region === "ML").reduce((a,b)=>a+b.count,0));
     let uaeStages = STAGE_ORDER.map(s => cards.filter(c => c.stage === s && c.region === "UAE").reduce((a,b)=>a+b.count,0));
@@ -502,7 +592,6 @@
       options: { responsive: true, maintainAspectRatio: false, scales: { x: { stacked: true, grid: { color: '#2B4152' }, ticks: { color: '#93A7B8', font:{size:9} } }, y: { stacked: true, grid: { color: '#2B4152' }, ticks: { color: '#93A7B8' } } }, plugins: { legend: { position: 'bottom', labels: { color: '#93A7B8', boxWidth: 10 } } } }
     });
 
-    // 5. Status Horizontal Bar
     chartInstances.statusBar = new Chart(document.getElementById("statusBarChart").getContext("2d"), {
       type: 'bar',
       data: {
@@ -512,7 +601,6 @@
       options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, scales: { x: { grid: { color: '#2B4152' }, ticks: { color: '#93A7B8' } }, y: { grid: { display: false }, ticks: { color: '#93A7B8', font:{weight:'bold'} } } }, plugins: { legend: { display: false } } }
     });
 
-    // 6. Heatmap Table
     const heatmapBody = document.getElementById("heatmapBody");
     heatmapBody.innerHTML = STAGE_ORDER.map(stage => {
       let regions = ['SG', 'ML', 'UAE'];
@@ -531,6 +619,7 @@
   function renderAll(){
     renderKPIs();
     renderBoard();
+    renderRoster();
     renderCharts();
   }
 
@@ -542,6 +631,26 @@
       renderBoard();
     }
   });
+
+  document.getElementById("rosterRegionFilter").addEventListener("click", function(e){
+    if(e.target.tagName === "BUTTON"){
+      document.querySelectorAll("#rosterRegionFilter button").forEach(b => b.classList.remove("active"));
+      e.target.classList.add("active");
+      rosterRegFilter = e.target.dataset.reg;
+      renderRoster();
+    }
+  });
+
+  document.getElementById("rosterStatusFilter").addEventListener("click", function(e){
+    if(e.target.tagName === "BUTTON"){
+      document.querySelectorAll("#rosterStatusFilter button").forEach(b => b.classList.remove("active"));
+      e.target.classList.add("active");
+      rosterStatFilter = e.target.dataset.stat;
+      renderRoster();
+    }
+  });
+
+  document.getElementById("rosterSearch").addEventListener("input", renderRoster);
 
   document.querySelectorAll(".tabbtn").forEach(btn => {
     btn.addEventListener("click", function(){
